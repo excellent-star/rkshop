@@ -73,7 +73,7 @@
                                                 <?php foreach($families as $key=> $family):   ?>
                                                     <tr>
                                                         <td>
-                                                            <input type="checkbox" id="test1" />
+                                                            <input type="checkbox" id="test1" value="<?=$family->famille_id;?>" name="famille_id[]" />
                                                             <label for="test1"></label>
                                                         </td>
                                                         <td><?=$family->famille_libelle;?></td>
@@ -103,7 +103,7 @@
                                       
                                      
 
-                                         <button style="margin-bottom: 20px;margin-left:10px;"  class="btn btn-danger">Suppression</button>
+                                         <button style="margin-bottom: 20px;margin-left:10px;"  class="btn btn-danger delete-multiple-checkbox-button">Suppression</button>
 
                                       
                                       
@@ -972,6 +972,26 @@ $('#image-button-update').click(function(e){
                   });
 
 
+         </script>
+
+
+
+
+         <script>
+
+               // here , I'm going to delete mutiple select checkboxes
+
+
+               $('.delete-multiple-checkbox-button').click(function(){
+
+
+                      alert('good');
+               });
+
+
+
+
+              
          </script>
 
 
