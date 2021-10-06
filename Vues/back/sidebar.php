@@ -15,7 +15,7 @@
                             <li><a><i class="material-icons">business</i>Parametrage<span class="fa arrow"></span></a>
                                 <ul class="nav nav-second-level">
                                     <li><a href="?p=<?= $fonction->double_cryptage("family");?>">Famille</a></li>
-                                    <li><a href="dataTables.html">Sous Famille</a></li>
+                                    <li><a href="?p=<?= $fonction->double_cryptage("sub_family");?>">Sous Famille</a></li>
                                     <li><a href="dataTables.html">Catégorie</a></li>
                                     <li><a href="dataTables.html">Marque</a></li>
                                     <li><a href="dataTables.html">Couleur</a></li>

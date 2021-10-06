@@ -300,6 +300,159 @@ switch ($p) {
 		
 			echo   json_encode($data);
 		break;
+
+
+	case 'run_delete_many_families': 
+
+		$ec_family_manager = new Ec_familleManager($db);
+
+		    $myid = $_POST['id'];
+
+			$id = str_replace(' ',',',$myid);
+
+
+			$result = $ec_family_manager->deleteRow("DELETE FROM ec_famille WHERE famille_id in($id) ",array());
+
+			
+			$data['response']="ok";
+
+		    echo json_encode($data);
+		break;
+
+
+	// here , we build sub-families 
+
+	case 'sub_family': 
+
+		$ec_family_manager = new Ec_familleManager($db);
+
+		$families = $ec_family_manager->getRows("SELECT * FROM ec_famille",array());
+
+
+		$sub_families = $ec_family_manager->getRows("SELECT * FROM ec_sous_famille",array());
+
+		
+
+		
+		require("Vues/back/product_sub_family.php");
+		
+
+		break;
+
+	case 'run_add_sub_family': 
+
+
+
+
+		$ec_family_manager = new Ec_familleManager($db);
+
+		
+
+		
+		$description = !empty($_POST['description'])?$_POST['description']:'';
+		$libelle = !empty($_POST['nom'])?$_POST['nom']:'';
+		$top_family_name = !empty($_POST['top_family_name'])?$_POST['top_family_name']:'';
+
+
+		$existence_request = $ec_family_manager->getRow("SELECT * FROM ec_sous_famille WHERE sous_famille_libelle=? AND famille_id=?",array(strtolower($libelle),$top_family_name));
+
+		
+
+		if(!$existence_request){
+
+
+		
+
+		
+		
+
+		
+
+		
+
+		 if(isset($_FILES) && !empty($_FILES)){
+
+
+			$fileTmpName = $_FILES['image']['tmp_name'];
+
+			$imageName = $_FILES['image']['name'];
+
+			$fileExt = explode('.',$imageName);
+			$fileActualExt = strtolower(end($fileExt));
+
+			$allowed = array('jpg','jpeg','png');
+
+
+						if(in_array($fileActualExt,$allowed)){
+
+
+							
+
+							$imageNew = uniqid('',true).".".$fileActualExt;
+
+							$fileDestination = 'assets/images/sub_families/'.$imageNew;
+
+							move_uploaded_file($fileTmpName,$fileDestination);
+
+
+
+							$ec_family_manager->insertRow("INSERT INTO ec_sous_famille(sous_famille_libelle,sous_famille_description,sous_famille_image,famille_id) VALUES(?,?,?,?)",array(strtolower($libelle),$description,$imageNew,$top_family_name));
+
+
+							$data['message'] = "Sauvegarder avec succès";
+							$data['code'] = 1;
+
+					}else{
+
+						$data['message'] = "ce document n'est pas supporté";
+						$data['code'] = 0;
+					}
+
+
+		 }else{
+
+
+			$ec_family_manager->insertRow("INSERT INTO ec_sous_famille(sous_famille_libelle,sous_famille_description,famille_id) VALUES(?,?,?)",array(strtolower($libelle),$description,$top_family_name));
+
+
+			$data['message'] = "Sauvegarder avec succès";
+			$data['code'] = 1;
+
+
+		 }
+
+		
+
+		
+
+		
+
+
+
+
+		// $ec_family = new Ec_famille($_POST);
+
+		
+
+		// $id_family =  $ec_family_manager->Enregistrer($ec_family);
+
+		
+
+
+
+	}else{
+
+
+		$data['message'] = "Cette Famille existe";
+		$data['code'] = 0;
+	}
+
+
+	
+
+
+		echo json_encode($data);
+		break;
 		
 		
 
