@@ -884,27 +884,27 @@ $('#image-button-update').click(function(e){
                     success:function(data){
 
 
-                        // if(data.code==1){
+                        if(data.code==1){
 
-                        //     swal('Succès!', data.message, 'success').catch(swal.noop)
+                            swal('Succès!', data.message, 'success').catch(swal.noop)
                            
 
-                        // }else{
+                        }else{
 
-                        //     swal('Problème!', data.message, 'success').catch(swal.noop)
+                            swal('Problème!', data.message, 'success').catch(swal.noop)
 
                            
-                        // }
+                        }
 
 
-                        // setInterval(function(){ 
+                        setInterval(function(){ 
 
-                        //     window.open("?p=<?= $fonction->double_cryptage("sub_family");?>","_self");
+                            window.open("?p=<?= $fonction->double_cryptage("sub_family");?>","_self");
 
-                        //  }, 3000);
+                         }, 3000);
 
 
-                        console.log(data);
+                        // console.log(data);
 
                        
                         

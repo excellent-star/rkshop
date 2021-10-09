@@ -78,27 +78,27 @@
 
                                                     <?php
 
-                                                         $familyRoot = $ec_family_manager->getRow("SELECT * FROM ec_famille WHERE famille_id=?",array($family->famille_id));
+                                                         $familyRoot = $ec_family_manager->getRow("SELECT * FROM ec_sous_famille WHERE sous_famille_id=?",array($family->sous_famille_id));
                                                            
                                                          
                                                     ?>
                                                     <tr>
                                                         <td>
-                                                            <input type="checkbox" id="test<?=$key;?>" class="checkItem" value="<?=$family->sous_famille_id;?>" name="id[]" />
+                                                            <input type="checkbox" id="test<?=$key;?>" class="checkItem" value="<?=$family->categorie_id;?>" name="id[]" />
                                                             <label for="test<?=$key;?>"></label>
                                                         </td>
-                                                        <td><?=$familyRoot->famille_libelle;?></td>
+                                                        <td><?=$familyRoot->sous_famille_libelle;?></td>
 
-                                                        <td><?=$family->sous_famille_libelle;?></td>
-                                                        <td><?= substr($family->sous_famille_description,0,30).' ...';?></td>
+                                                        <td><?=$family->categorie_libelle;?></td>
+                                                        <td><?= substr($family->categorie_description,0,30).' ...';?></td>
                                                         <td style="text-align: center;">
 
-                                                              <button class="btn btn-sm view" data-target="#view-product"  data-toggle="modal" data-id="<?=$family->sous_famille_id;?>" data-nom="<?=$family->sous_famille_libelle;?>" data-description="<?=$family->sous_famille_description;?>"  data-image="<?=$family->sous_famille_image;?>" data-placement="left" title="Update"><i class="fa fa-eye" aria-hidden="true"></i></button>
+                                                              <button class="btn btn-sm view" data-target="#view-product"  data-toggle="modal" data-id="<?=$family->categorie_id;?>" data-nom="<?=$family->categorie_libelle;?>" data-description="<?=$family->categorie_description;?>"  data-image="<?=$family->categorie_image;?>" data-placement="left" title="Update"><i class="fa fa-eye" aria-hidden="true"></i></button>
 
-                                                            <button class="btn btn-sm edit" data-id="<?=$family->sous_famille_id;?>" data-family_top_name="<?=$familyRoot->famille_libelle;?>" data-family_top_id="<?=$familyRoot->famille_id;?>" data-nom="<?=$family->sous_famille_libelle;?>" data-description="<?=$family->sous_famille_description;?>"  data-image="<?=$family->sous_famille_image;?>"  data-placement="left" title="Update" data-target="#update-product"  data-toggle="modal"><i class="fa fa-pencil" aria-hidden="true"></i></button>
+                                                            <button class="btn btn-sm edit" data-id="<?=$family->categorie_id;?>" data-family_top_name="<?=$familyRoot->sous_famille_libelle;?>" data-family_top_id="<?=$familyRoot->sous_famille_id;?>" data-nom="<?=$family->categorie_libelle;?>" data-description="<?=$family->categorie_description;?>"  data-image="<?=$family->categorie_image;?>"  data-placement="left" title="Update" data-target="#update-product"  data-toggle="modal"><i class="fa fa-pencil" aria-hidden="true"></i></button>
 
 
-                                                            <button class="btn btn-danger btn-sm delete" data-toggle="tooltip" data-id="<?=$family->sous_famille_id;?>" data-placement="right" title="Delete "><i class="fa fa-trash-o" aria-hidden="true"></i></button>
+                                                            <button class="btn btn-danger btn-sm delete" data-toggle="tooltip" data-id="<?=$family->categorie_id;?>" data-placement="right" title="Delete "><i class="fa fa-trash-o" aria-hidden="true"></i></button>
                                                         </td>
                                                     </tr>
 
@@ -168,7 +168,7 @@
                                                       
                                                        <?php foreach($families as $top_family): ?>
 
-                                                        <option value="<?=$top_family->famille_id;?>"><?=$top_family->famille_libelle;?></option>
+                                                        <option value="<?=$top_family->sous_famille_id;?>"><?=$top_family->sous_famille_libelle;?></option>
 
                                                        <?php  endforeach; ?>
 
@@ -248,7 +248,7 @@
                                                       
                                                        <?php foreach($families as $top_family): ?>
 
-                                                        <option value="<?=$top_family->famille_id;?>"><?=$top_family->famille_libelle;?></option>
+                                                        <option value="<?=$top_family->sous_famille_id;?>"><?=$top_family->sous_famille_libelle;?></option>
 
                                                        <?php  endforeach; ?>
 
@@ -884,27 +884,27 @@ $('#image-button-update').click(function(e){
                     success:function(data){
 
 
-                        // if(data.code==1){
+                        if(data.code==1){
 
-                        //     swal('Succès!', data.message, 'success').catch(swal.noop)
+                            swal('Succès!', data.message, 'success').catch(swal.noop)
                            
 
-                        // }else{
+                        }else{
 
-                        //     swal('Problème!', data.message, 'success').catch(swal.noop)
+                            swal('Problème!', data.message, 'success').catch(swal.noop)
 
                            
-                        // }
+                        }
 
 
-                        // setInterval(function(){ 
+                        setInterval(function(){ 
 
-                        //     window.open("?p=<?= $fonction->double_cryptage("category");?>","_self");
+                            window.open("?p=<?= $fonction->double_cryptage("category");?>","_self");
 
-                        //  }, 3000);
+                         }, 3000);
 
 
-                        console.log(data);
+                        // console.log(data);
 
                        
                         

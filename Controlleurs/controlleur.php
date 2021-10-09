@@ -637,6 +637,290 @@ switch ($p) {
 		require("Vues/back/product_category.php");
 		break;
 
+
+	case 'run_add_category': 
+
+
+		
+
+		$ec_family_manager = new Ec_familleManager($db);
+
+		
+
+		
+		$description = !empty($_POST['description'])?$_POST['description']:'';
+		$libelle = !empty($_POST['nom'])?$_POST['nom']:'';
+		$top_family_name = !empty($_POST['top_family_name'])?$_POST['top_family_name']:'';
+
+
+		$existence_request = $ec_family_manager->getRow("SELECT * FROM categorie_famille WHERE categorie_libelle=? AND sous_famille_id=?",array(strtolower($libelle),$top_family_name));
+
+		
+
+		if(!$existence_request){
+
+
+		
+
+		
+		
+
+		
+
+		
+
+		 if(isset($_FILES) && !empty($_FILES)){
+
+
+			$fileTmpName = $_FILES['image']['tmp_name'];
+
+			$imageName = $_FILES['image']['name'];
+
+			$fileExt = explode('.',$imageName);
+			$fileActualExt = strtolower(end($fileExt));
+
+			$allowed = array('jpg','jpeg','png');
+
+
+						if(in_array($fileActualExt,$allowed)){
+
+
+							
+
+							$imageNew = uniqid('',true).".".$fileActualExt;
+
+							$fileDestination = 'assets/images/categories/'.$imageNew;
+
+							move_uploaded_file($fileTmpName,$fileDestination);
+
+
+
+							$ec_family_manager->insertRow("INSERT INTO ec_categorie(categorie_libelle,categorie_description,categorie_image,sous_famille_id) VALUES(?,?,?,?)",array(strtolower($libelle),$description,$imageNew,$top_family_name));
+
+
+							$data['message'] = "Sauvegarder avec succès";
+							$data['code'] = 1;
+
+					}else{
+
+						$data['message'] = "ce document n'est pas supporté";
+						$data['code'] = 0;
+					}
+
+
+		 }else{
+
+
+			$ec_family_manager->insertRow("INSERT INTO ec_categorie(categorie_libelle,categorie_description,sous_famille_id) VALUES(?,?,?)",array(strtolower($libelle),$description,$top_family_name));
+
+
+			$data['message'] = "Sauvegarder avec succès";
+			$data['code'] = 1;
+
+
+		 }
+
+		
+
+		
+
+		
+
+
+
+
+		// $ec_family = new Ec_famille($_POST);
+
+		
+
+		// $id_family =  $ec_family_manager->Enregistrer($ec_family);
+
+		
+
+
+
+	}else{
+
+
+		$data['message'] = "Cette Famille existe";
+		$data['code'] = 0;
+	}
+
+
+	
+
+		echo json_encode($data);
+		break;
+
+
+	case 'run_update_category': 
+
+
+		$ec_family_manager = new Ec_familleManager($db);
+
+		
+
+		
+		$description = !empty($_POST['description'])?$_POST['description']:'';
+		$libelle = !empty($_POST['nom'])?$_POST['nom']:'';
+		$id = !empty($_POST['id'])?$_POST['id']:'';
+		$id_top = !empty($_POST['id_top'])?$_POST['id_top']:'';
+
+		// var_dump($_POST['id']);
+		// die();
+
+
+		
+
+
+
+
+
+		$existence_request = $ec_family_manager->getRow("SELECT * FROM ec_categorie WHERE categorie_libelle=?",array(strtolower($libelle)));
+
+		
+
+		if(!$existence_request){
+
+
+		
+
+		
+		
+
+		
+
+		
+
+		 if(isset($_FILES) && !empty($_FILES)){
+
+
+			$fileTmpName = $_FILES['image']['tmp_name'];
+
+			$imageName = $_FILES['image']['name'];
+
+			$fileExt = explode('.',$imageName);
+			$fileActualExt = strtolower(end($fileExt));
+
+			$allowed = array('jpg','jpeg','png');
+
+
+						if(in_array($fileActualExt,$allowed)){
+
+
+							
+
+							$imageNew = uniqid('',true).".".$fileActualExt;
+
+							$fileDestination = 'assets/images/categories/'.$imageNew;
+
+							move_uploaded_file($fileTmpName,$fileDestination);
+
+
+
+							// $ec_family_manager->insertRow("INSERT INTO ec_famille(famille_libelle,famille_description,famille_image) VALUES(?,?,?)",array(strtolower($libelle),$description,$imageNew));
+
+							$ec_family_manager->updateRow1("UPDATE ec_categorie SET categorie_libelle=?,categorie_description=?,categorie_image=?,sous_famille_id=? WHERE categorie_id=?",array(strtolower($libelle),$description,$imageNew,$id_top,$id));
+
+
+							$data['message'] = "Modifier avec succès";
+							$data['code'] = 1;
+
+					}else{
+
+						$data['message'] = "ce document n'est pas supporté";
+						$data['code'] = 0;
+					}
+
+
+		 }else{
+
+
+			$image = !empty($_POST['image'])?$_POST['image']:'';
+
+
+			// $ec_family_manager->insertRow("INSERT INTO ec_famille(famille_libelle,famille_description) VALUES(?,?)",array(strtolower($libelle),$description));
+
+			$ec_family_manager->updateRow1("UPDATE ec_categorie SET categorie_libelle=?,categorie_description=?,categorie_image=?,sous_famille_id=? WHERE categorie_id=?",array(strtolower($libelle),$description,$image,$id_top,$id));
+
+			
+
+
+			$data['message'] = "Modifié avec succès";
+			$data['code'] = 1;
+
+
+		 }
+
+		
+
+		
+
+		
+
+
+
+
+		// $ec_family = new Ec_famille($_POST);
+
+		
+
+		// $id_family =  $ec_family_manager->Enregistrer($ec_family);
+
+		
+
+
+
+	}else{
+
+
+		$data['message'] = "Cette Famille existe";
+		$data['code'] = 0;
+	}
+
+
+
+
+		echo json_encode($data);
+		break;
+
+
+	case 'run_delete_category': 
+
+		$id  = $_POST['id'];
+
+		$ec_family_manager = new Ec_familleManager($db);
+
+
+		$delete_query = $ec_family_manager->deleteRow("DELETE FROM ec_categorie WHERE categorie_id=?",array($id));
+
+		$data['response']="ok";
+		
+			echo   json_encode($data);
+
+
+		break;
+
+	case 'run_delete_many_categories': 
+
+
+		$ec_family_manager = new Ec_familleManager($db);
+
+		    $myid = $_POST['id'];
+
+			$id = str_replace(' ',',',$myid);
+
+
+			$result = $ec_family_manager->deleteRow("DELETE FROM ec_categorie WHERE categorie_id in($id) ",array());
+
+			
+			$data['response']="ok";
+
+		    echo json_encode($data);
+
+
+		break;
+
 	default:	
 
 	
