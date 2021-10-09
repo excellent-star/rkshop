@@ -4,7 +4,7 @@
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>Sous Famille produit</title>
+        <title>Catégorie produit</title>
 
         <?php include('main_styles.php');?>
 
@@ -26,11 +26,11 @@
                             <i class="fa fa-file-o"></i>
                         </div>
                         <div class="header-title">
-                            <h1> Sous Famille des Produits</h1>
+                            <h1> Catégories</h1>
                             <small> ajouter/supprimer/modifier/voir</small>
                             <ul class="link hidden-xs">
                                 <li><a href="?p=dashboard"><i class="fa fa-home"></i>Tableau de Bord</a></li>
-                                <li><a href="?p=sub_family">Sous Famille</a></li>
+                                <li><a href="?p=sub_family">Catégorie Famille</a></li>
                             </ul>
                         </div>
                     </section>
@@ -48,7 +48,7 @@
                                         </div>
                                           <div>
 
-                                           <button style="background-color:#26A69A;" class="btn not-display-image" data-target="#add-product"  data-toggle="modal">Ajouter une Sous Famille</button>
+                                           <button style="background-color:#26A69A;" class="btn not-display-image" data-target="#add-product"  data-toggle="modal">Ajouter une Catégorie</button>
 
                                         </div>
                                         
@@ -66,7 +66,7 @@
                                                             <input type="checkbox" id="test" class="checkAll"  />
                                                             <label for="test"></label>
                                                         </td>
-                                                        <th>Famille</th>
+                                                        <th>Sous Famille</th>
                                                         <th>Nom</th>
                                                         <th>Description </th>
                                                         <th>Actions</th>
@@ -74,7 +74,7 @@
                                                 </thead>
                                                 <tbody>
 
-                                                <?php foreach($sub_families as $key=> $family):   ?>
+                                                <?php foreach($category_families as $key=> $family):   ?>
 
                                                     <?php
 
@@ -152,7 +152,7 @@
                                     <form action="" id="add-family-form">
                                         <div class="modal-header">
                                             <button type="button" id="modal-x-close-button" class="close" data-dismiss="modal">&times;</button>
-                                            <h4 class="modal-title">Ajouter une sous famille</h4>
+                                            <h4 class="modal-title">Ajouter catégorie</h4>
                                         </div>
                                        
 
@@ -160,7 +160,7 @@
                                         <div class="modal-body">
 
                                                 <div class="form-group">
-                                                    <label style="font-size:16px;color:#26A69A;" for="nom-famille">Famille <span class="text-danger">*</span></label>
+                                                    <label style="font-size:16px;color:#26A69A;" for="nom-famille">Sous Famille <span class="text-danger">*</span></label>
 
                                                     <select name="nom-famille-top" id="top_family_name" class="" required>
 
@@ -181,7 +181,7 @@
                                                 </div>
                                             
                                                 <div class="form-group">
-                                                    <label style="font-size:16px;color:#26A69A;" for="nom-famille">Nom Sous Famille <span class="text-danger">*</span></label>
+                                                    <label style="font-size:16px;color:#26A69A;" for="nom-famille">Nom Catégorie <span class="text-danger">*</span></label>
                                                     <input type="text" class="form-control" id="nom-famille"  placeholder="Nom Famille Produit" required>
                                                     <small id="nom-famille-msg" class="form-text text-muted"></small>
                                                 </div>
@@ -457,19 +457,19 @@
                     $('#add-product').on("hide.bs.modal", function() {
 
 
-                        window.open("?p=<?= $fonction->double_cryptage("sub_family");?>","_self");
+                        window.open("?p=<?= $fonction->double_cryptage("category_family");?>","_self");
                         
                     })
                     $('#update-product').on("hide.bs.modal", function() {
 
 
-                        window.open("?p=<?= $fonction->double_cryptage("sub_family");?>","_self");
+                        window.open("?p=<?= $fonction->double_cryptage("category_family");?>","_self");
                         
                     })
                     $('#view-product').on("hide.bs.modal", function() {
 
 
-                        window.open("?p=<?= $fonction->double_cryptage("sub_family");?>","_self");
+                        window.open("?p=<?= $fonction->double_cryptage("category_family");?>","_self");
                         
                     })
 
@@ -551,7 +551,7 @@
                             $('#description-famille').val('');
                             $('#image-famille').val('');
 
-                            window.open("?p=<?= $fonction->double_cryptage("sub_family");?>","_self");
+                            window.open("?p=<?= $fonction->double_cryptage("category_family");?>","_self");
                       });
 
                        $('#modal-x-close-button').click(function(){
@@ -559,7 +559,7 @@
                             $('#nom-famille').val('');
                             $('#description-famille').val('');
                             $('#image-famille').val('');
-                            window.open("?p=<?= $fonction->double_cryptage("sub_family");?>","_self");
+                            window.open("?p=<?= $fonction->double_cryptage("category_family");?>","_self");
                       });
 
                       
@@ -588,7 +588,7 @@
                                     $.ajax({
 
 
-                                        url:"?p=<?= $fonction->double_cryptage("run_add_sub_family");?>",
+                                        url:"?p=<?= $fonction->double_cryptage("run_add_category");?>",
                                         type:"POST",
                                         dataType:"JSON",
                                         processData:false,
@@ -615,7 +615,7 @@
 
                                             setInterval(function(){ 
 
-                                                window.open("?p=<?= $fonction->double_cryptage("sub_family");?>","_self");
+                                                window.open("?p=<?= $fonction->double_cryptage("category_family");?>","_self");
 
                                              }, 3000);
                                             
@@ -790,7 +790,7 @@ $('#image-button-update').click(function(e){
         $('#description-famille').val('');
         $('#image-famille-update').val('');
 
-        window.open("?p=<?= $fonction->double_cryptage("sub_family");?>","_self");
+        window.open("?p=<?= $fonction->double_cryptage("category_family");?>","_self");
   });
 
    $('#modal-x-close-button').click(function(){
@@ -798,7 +798,7 @@ $('#image-button-update').click(function(e){
         $('#nom-famille').val('');
         $('#description-famille').val('');
         $('#image-famille-update').val('');
-        window.open("?p=<?= $fonction->double_cryptage("sub_family");?>","_self");
+        window.open("?p=<?= $fonction->double_cryptage("category_family");?>","_self");
   });
 
   
@@ -875,7 +875,7 @@ $('#image-button-update').click(function(e){
                 $.ajax({
 
 
-                    url:"?p=<?= $fonction->double_cryptage("run_update_sub_family");?>",
+                    url:"?p=<?= $fonction->double_cryptage("run_update_category");?>",
                     type:"POST",
                     dataType:"JSON",
                     processData:false,
@@ -899,7 +899,7 @@ $('#image-button-update').click(function(e){
 
                         // setInterval(function(){ 
 
-                        //     window.open("?p=<?= $fonction->double_cryptage("sub_family");?>","_self");
+                        //     window.open("?p=<?= $fonction->double_cryptage("category_family");?>","_self");
 
                         //  }, 3000);
 
@@ -1036,7 +1036,7 @@ $('#image-button-update').click(function(e){
                                                             $.ajax({
 
 
-                                                                url:"?p=<?= $fonction->double_cryptage("run_delete_sub_family");?>",
+                                                                url:"?p=<?= $fonction->double_cryptage("run_delete_category");?>",
                                                                 type:"POST",
                                                                 dataType:"JSON",
                                                                 data:{id:id},
@@ -1051,7 +1051,7 @@ $('#image-button-update').click(function(e){
 
                                                                      setInterval(function(){ 
 
-                                                                    window.open("?p=<?= $fonction->double_cryptage("sub_family");?>","_self");
+                                                                    window.open("?p=<?= $fonction->double_cryptage("category_family");?>","_self");
 
                                                                 }, 3000);
 
@@ -1142,7 +1142,7 @@ $('#image-button-update').click(function(e){
                                                             $.ajax({
 
 
-                                                                url:"?p=<?= $fonction->double_cryptage("run_delete_many_sub_families");?>",
+                                                                url:"?p=<?= $fonction->double_cryptage("run_delete_many_categories");?>",
                                                                 type:"POST",
                                                                 dataType:"JSON",
                                                                 data:{id:id},
@@ -1160,7 +1160,7 @@ $('#image-button-update').click(function(e){
 
                                                                      setInterval(function(){ 
 
-                                                                    window.open("?p=<?= $fonction->double_cryptage("sub_family");?>","_self");
+                                                                    window.open("?p=<?= $fonction->double_cryptage("category_family");?>","_self");
 
                                                                 }, 3000);
 
