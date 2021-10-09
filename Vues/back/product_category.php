@@ -457,19 +457,19 @@
                     $('#add-product').on("hide.bs.modal", function() {
 
 
-                        window.open("?p=<?= $fonction->double_cryptage("category_family");?>","_self");
+                        window.open("?p=<?= $fonction->double_cryptage("category");?>","_self");
                         
                     })
                     $('#update-product').on("hide.bs.modal", function() {
 
 
-                        window.open("?p=<?= $fonction->double_cryptage("category_family");?>","_self");
+                        window.open("?p=<?= $fonction->double_cryptage("category");?>","_self");
                         
                     })
                     $('#view-product').on("hide.bs.modal", function() {
 
 
-                        window.open("?p=<?= $fonction->double_cryptage("category_family");?>","_self");
+                        window.open("?p=<?= $fonction->double_cryptage("category");?>","_self");
                         
                     })
 
@@ -551,7 +551,7 @@
                             $('#description-famille').val('');
                             $('#image-famille').val('');
 
-                            window.open("?p=<?= $fonction->double_cryptage("category_family");?>","_self");
+                            window.open("?p=<?= $fonction->double_cryptage("category");?>","_self");
                       });
 
                        $('#modal-x-close-button').click(function(){
@@ -559,7 +559,7 @@
                             $('#nom-famille').val('');
                             $('#description-famille').val('');
                             $('#image-famille').val('');
-                            window.open("?p=<?= $fonction->double_cryptage("category_family");?>","_self");
+                            window.open("?p=<?= $fonction->double_cryptage("category");?>","_self");
                       });
 
                       
@@ -615,7 +615,7 @@
 
                                             setInterval(function(){ 
 
-                                                window.open("?p=<?= $fonction->double_cryptage("category_family");?>","_self");
+                                                window.open("?p=<?= $fonction->double_cryptage("category");?>","_self");
 
                                              }, 3000);
                                             
@@ -681,7 +681,7 @@
 
 
 
-                        var img = '<img style="width:150px;height:150px;" src="assets/images/sub_families/'+image+'"  />';
+                        var img = '<img style="width:150px;height:150px;" src="assets/images/categories/'+image+'"  />';
 
 
                         
@@ -790,7 +790,7 @@ $('#image-button-update').click(function(e){
         $('#description-famille').val('');
         $('#image-famille-update').val('');
 
-        window.open("?p=<?= $fonction->double_cryptage("category_family");?>","_self");
+        window.open("?p=<?= $fonction->double_cryptage("category");?>","_self");
   });
 
    $('#modal-x-close-button').click(function(){
@@ -798,7 +798,7 @@ $('#image-button-update').click(function(e){
         $('#nom-famille').val('');
         $('#description-famille').val('');
         $('#image-famille-update').val('');
-        window.open("?p=<?= $fonction->double_cryptage("category_family");?>","_self");
+        window.open("?p=<?= $fonction->double_cryptage("category");?>","_self");
   });
 
   
@@ -899,7 +899,7 @@ $('#image-button-update').click(function(e){
 
                         // setInterval(function(){ 
 
-                        //     window.open("?p=<?= $fonction->double_cryptage("category_family");?>","_self");
+                        //     window.open("?p=<?= $fonction->double_cryptage("category");?>","_self");
 
                         //  }, 3000);
 
@@ -970,7 +970,7 @@ $('#image-button-update').click(function(e){
 
 
 
-                        var img = '<img style="width:100%;height:300px;" src="assets/images/sub_families/'+image+'"  />';
+                        var img = '<img style="width:100%;height:300px;" src="assets/images/categories/'+image+'"  />';
 
 
                         
@@ -1051,7 +1051,7 @@ $('#image-button-update').click(function(e){
 
                                                                      setInterval(function(){ 
 
-                                                                    window.open("?p=<?= $fonction->double_cryptage("category_family");?>","_self");
+                                                                    window.open("?p=<?= $fonction->double_cryptage("category");?>","_self");
 
                                                                 }, 3000);
 
@@ -1160,7 +1160,7 @@ $('#image-button-update').click(function(e){
 
                                                                      setInterval(function(){ 
 
-                                                                    window.open("?p=<?= $fonction->double_cryptage("category_family");?>","_self");
+                                                                    window.open("?p=<?= $fonction->double_cryptage("category");?>","_self");
 
                                                                 }, 3000);
 
