@@ -921,6 +921,123 @@ switch ($p) {
 
 		break;
 
+	case 'brand': 
+
+
+		$ec_family_manager = new Ec_familleManager($db);
+
+		$brands = $ec_family_manager->getRows("SELECT * FROM ec_marque ORDER BY marque_id DESC");
+
+		require("Vues/back/product_brand.php");
+		break;
+
+
+	case 'run_add_brand': 
+
+
+		$ec_family_manager = new Ec_familleManager($db);
+
+		$nom = $_POST['nom'];
+
+
+		$existence_request = $ec_family_manager->getRow("SELECT * FROM ec_marque WHERE marque_libelle=?",array(strtolower($nom)));
+
+		
+
+		if(!$existence_request){
+
+
+
+			$result = $ec_family_manager->insertRow("INSERT INTO ec_marque(marque_libelle) VALUES(?)",array($nom));
+
+			$data['message'] = "Cette Marque est enregistré avec succès";
+			$data['code'] = 1;
+
+
+		}else{
+
+
+			$data['message'] = "Cette Marque existe";
+			$data['code'] = 0;
+		}
+
+		
+
+		echo json_encode($data);
+		break;
+
+	case 'run_update_brand': 
+
+		$ec_family_manager = new Ec_familleManager($db);
+
+		$nom = $_POST['nom'];
+		$id = $_POST['id'];
+
+
+		$existence_request = $ec_family_manager->getRow("SELECT * FROM ec_marque WHERE marque_libelle=?",array(strtolower($nom)));
+
+		
+
+		if(!$existence_request){
+
+
+
+			$result = $ec_family_manager->updateRow1("UPDATE ec_marque SET marque_libelle=? WHERE marque_id=?",array($nom,$id));
+
+
+			$data['message'] = "Cette Marque est modifié avec succès";
+			$data['code'] = 1;
+
+
+		}else{
+
+
+			$data['message'] = "Cette Marque existe";
+			$data['code'] = 0;
+		}
+
+		
+
+		echo json_encode($data);
+		break;
+
+	case 'run_delete_brand': 
+
+
+		$id  = $_POST['id'];
+
+		$ec_family_manager = new Ec_familleManager($db);
+
+
+		$delete_query = $ec_family_manager->deleteRow("DELETE FROM ec_marque WHERE marque_id=?",array($id));
+
+		$data['response']="ok";
+		
+			echo   json_encode($data);
+
+
+		break;
+
+	case 'run_delete_many_brands': 
+
+
+		$ec_family_manager = new Ec_familleManager($db);
+
+		    $myid = $_POST['id'];
+
+			$id = str_replace(' ',',',$myid);
+
+
+			$result = $ec_family_manager->deleteRow("DELETE FROM ec_marque WHERE marque_id in($id) ",array());
+
+			
+			$data['response']="ok";
+
+		    echo json_encode($data);
+
+
+		break;
+
 	default:	
 
 	
