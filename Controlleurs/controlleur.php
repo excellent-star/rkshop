@@ -1038,6 +1038,128 @@ switch ($p) {
 
 		break;
 
+
+	case 'color': 
+
+		$ec_family_manager = new Ec_familleManager($db);
+
+		$colors = $ec_family_manager->getRows("SELECT * FROM ec_article_couleur ORDER BY article_couleur_id DESC");
+
+		require("Vues/back/product_color.php");
+		
+		break;
+
+	case 'run_add_color': 
+
+
+		$ec_family_manager = new Ec_familleManager($db);
+
+		$nom = $_POST['nom'];
+
+
+		$existence_request = $ec_family_manager->getRow("SELECT * FROM ec_article_couleur WHERE article_couleur_libelle=?",array(strtolower($nom)));
+
+		
+
+		if(!$existence_request){
+
+
+
+			$result = $ec_family_manager->insertRow("INSERT INTO ec_article_couleur(article_couleur_libelle) VALUES(?)",array(strtolower($nom)));
+
+			$data['message'] = "Cette Couleur est enregistré avec succès";
+			$data['code'] = 1;
+
+
+		}else{
+
+
+			$data['message'] = "Cette Couleur existe";
+			$data['code'] = 0;
+		}
+
+		
+
+		echo json_encode($data);
+
+		
+		break;
+
+	case 'run_update_color': 
+
+		$ec_family_manager = new Ec_familleManager($db);
+
+		$nom = $_POST['nom'];
+		$id = $_POST['id'];
+
+
+		$existence_request = $ec_family_manager->getRow("SELECT * FROM ec_article_couleur WHERE article_couleur_libelle=?",array(strtolower($nom)));
+
+		
+
+		if(!$existence_request){
+
+
+
+			$result = $ec_family_manager->updateRow1("UPDATE ec_article_couleur SET article_couleur_libelle=? WHERE article_couleur_id=?",array(strtolower($nom),$id));
+
+
+			$data['message'] = "Cette Couleur est modifié avec succès";
+			$data['code'] = 1;
+
+
+		}else{
+
+
+			$data['message'] = "Cette Couleur existe";
+			$data['code'] = 0;
+		}
+
+		
+
+		echo json_encode($data);
+
+		
+		break;
+
+
+	case 'run_delete_color': 
+
+
+		$id  = $_POST['id'];
+
+		$ec_family_manager = new Ec_familleManager($db);
+
+
+		$delete_query = $ec_family_manager->deleteRow("DELETE FROM ec_article_couleur WHERE article_couleur_id=?",array($id));
+
+		$data['response']="ok";
+		
+			echo   json_encode($data);
+
+
+		break;
+
+	case 'run_delete_many_colors': 
+
+
+		$ec_family_manager = new Ec_familleManager($db);
+
+		    $myid = $_POST['id'];
+
+			$id = str_replace(' ',',',$myid);
+
+
+			$result = $ec_family_manager->deleteRow("DELETE FROM ec_article_couleur WHERE article_couleur_id in($id) ",array());
+
+			
+			$data['response']="ok";
+
+		    echo json_encode($data);
+
+
+		break;
+
 	default:	
 
 	

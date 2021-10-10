@@ -18,8 +18,9 @@
                                     <li><a href="?p=<?= $fonction->double_cryptage("sub_family");?>">Sous Famille</a></li>
                                     <li><a  href="?p=<?= $fonction->double_cryptage("category");?>">Catégorie</a></li>
                                     <li><a  href="?p=<?= $fonction->double_cryptage("brand");?>">Marque</a></li>
+                                    <li><a  href="?p=<?= $fonction->double_cryptage("color");?>">Couleur</a></li>
                                    
-                                    <li><a href="dataTables.html">Couleur</a></li>
+                                    
                                     <li><a href="dataTables.html">Taille</a></li>
                                     <li><a href="dataTables.html"> Pointure</a></li>
                                    
