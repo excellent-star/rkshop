@@ -21,8 +21,8 @@
                                     <li><a  href="?p=<?= $fonction->double_cryptage("color");?>">Couleur</a></li>
                                    
                                     
-                                    <li><a href="dataTables.html">Taille</a></li>
-                                    <li><a href="dataTables.html"> Pointure</a></li>
+                                    <li><a href="?p=<?= $fonction->double_cryptage("size");?>">Taille</a></li>
+                                    <li><a href="?p=<?= $fonction->double_cryptage("shoeSize");?>"> Pointure</a></li>
                                    
                                 </ul>
                             </li>

@@ -1140,7 +1140,7 @@ switch ($p) {
 
 		break;
 
-	case 'run_delete_many_colors': 
+case 'run_delete_many_colors': 
 
 
 		$ec_family_manager = new Ec_familleManager($db);
@@ -1159,6 +1159,248 @@ switch ($p) {
 
 
 		break;
+
+	case 'size': 
+
+			$ec_family_manager = new Ec_familleManager($db);
+	
+			$sizes = $ec_family_manager->getRows("SELECT * FROM ec_taille_pointure WHERE taille_pointure_type=0  ORDER BY taille_pointure_id DESC");
+	
+			require("Vues/back/product_size.php");
+			
+			break;
+	
+	case 'run_add_size': 
+	
+	
+			$ec_family_manager = new Ec_familleManager($db);
+	
+			$nom = $_POST['nom'];
+	
+	
+			$existence_request = $ec_family_manager->getRow("SELECT * FROM ec_taille_pointure WHERE taille_pointure_libelle=?",array(strtolower($nom)));
+	
+			
+	
+			if(!$existence_request){
+	
+	
+	
+				$result = $ec_family_manager->insertRow("INSERT INTO ec_taille_pointure(taille_pointure_libelle,taille_pointure_type) VALUES(?,?)",array(strtolower($nom),0));
+	
+				$data['message'] = "Cette Taille est enregistré avec succès";
+				$data['code'] = 1;
+	
+	
+			}else{
+	
+	
+				$data['message'] = "Cette Taille existe";
+				$data['code'] = 0;
+			}
+	
+			
+	
+			echo json_encode($data);
+	
+			
+			break;
+	
+	case 'run_update_size': 
+	
+			$ec_family_manager = new Ec_familleManager($db);
+	
+			$nom = $_POST['nom'];
+			$id = $_POST['id'];
+	
+	
+			$existence_request = $ec_family_manager->getRow("SELECT * FROM ec_taille_pointure WHERE taille_pointure_libelle=?",array(strtolower($nom)));
+	
+			
+	
+			if(!$existence_request){
+	
+	
+	
+				$result = $ec_family_manager->updateRow1("UPDATE ec_taille_pointure SET taille_pointure_libelle=? WHERE taille_pointure_id=?",array(strtolower($nom),$id));
+	
+	
+				$data['message'] = "Cette Taille est modifié avec succès";
+				$data['code'] = 1;
+	
+	
+			}else{
+	
+	
+				$data['message'] = "Cette Taille existe";
+				$data['code'] = 0;
+			}
+	
+			
+	
+			echo json_encode($data);
+	
+			
+			break;
+	
+	
+	case 'run_delete_size': 
+	
+	
+			$id  = $_POST['id'];
+	
+			$ec_family_manager = new Ec_familleManager($db);
+	
+	
+			$delete_query = $ec_family_manager->deleteRow("DELETE FROM ec_taille_pointure WHERE taille_pointure_id=?",array($id));
+	
+			$data['response']="ok";
+			
+				echo   json_encode($data);
+	
+	
+			break;
+	
+	case 'run_delete_many_sizes': 
+	
+	
+			$ec_family_manager = new Ec_familleManager($db);
+	
+				$myid = $_POST['id'];
+	
+				$id = str_replace(' ',',',$myid);
+	
+	
+				$result = $ec_family_manager->deleteRow("DELETE FROM ec_taille_pointure WHERE taille_pointure_id in($id) ",array());
+	
+				
+				$data['response']="ok";
+	
+				echo json_encode($data);
+	
+	
+			break;
+
+	case 'shoeSize': 
+
+				$ec_family_manager = new Ec_familleManager($db);
+		
+				$sizes = $ec_family_manager->getRows("SELECT * FROM ec_taille_pointure WHERE taille_pointure_type=1  ORDER BY taille_pointure_id DESC");
+		
+				require("Vues/back/product_shoeSize.php");
+				
+				break;
+		
+	case 'run_add_shoeSize': 
+		
+		
+				$ec_family_manager = new Ec_familleManager($db);
+		
+				$nom = $_POST['nom'];
+		
+		
+				$existence_request = $ec_family_manager->getRow("SELECT * FROM ec_taille_pointure WHERE taille_pointure_libelle=?",array(strtolower($nom)));
+		
+				
+		
+				if(!$existence_request){
+		
+		
+		
+					$result = $ec_family_manager->insertRow("INSERT INTO ec_taille_pointure(taille_pointure_libelle,taille_pointure_type) VALUES(?,?)",array(strtolower($nom),1));
+		
+					$data['message'] = "Cette Pointure est enregistré avec succès";
+					$data['code'] = 1;
+		
+		
+				}else{
+		
+		
+					$data['message'] = "Cette Pointure existe";
+					$data['code'] = 0;
+				}
+		
+				
+		
+				echo json_encode($data);
+		
+				
+				break;
+		
+	case 'run_update_shoeSize': 
+		
+				$ec_family_manager = new Ec_familleManager($db);
+		
+				$nom = $_POST['nom'];
+				$id = $_POST['id'];
+		
+		
+				$existence_request = $ec_family_manager->getRow("SELECT * FROM ec_taille_pointure WHERE taille_pointure_libelle=?",array(strtolower($nom)));
+		
+				
+		
+				if(!$existence_request){
+		
+		
+		
+					$result = $ec_family_manager->updateRow1("UPDATE ec_taille_pointure SET taille_pointure_libelle=? WHERE taille_pointure_id=?",array(strtolower($nom),$id));
+		
+		
+					$data['message'] = "Cette Pointure est modifié avec succès";
+					$data['code'] = 1;
+		
+		
+				}else{
+		
+		
+					$data['message'] = "Cette Pointure existe";
+					$data['code'] = 0;
+				}
+		
+				
+		
+				echo json_encode($data);
+		
+				
+				break;
+		
+		
+	case 'run_delete_shoeSize': 
+		
+		
+				$id  = $_POST['id'];
+		
+				$ec_family_manager = new Ec_familleManager($db);
+		
+		
+				$delete_query = $ec_family_manager->deleteRow("DELETE FROM ec_taille_pointure WHERE taille_pointure_id=?",array($id));
+		
+				$data['response']="ok";
+				
+					echo   json_encode($data);
+		
+		
+				break;
+		
+	case 'run_delete_many_shoeSizes': 
+		
+		
+				$ec_family_manager = new Ec_familleManager($db);
+		
+					$myid = $_POST['id'];
+		
+					$id = str_replace(' ',',',$myid);
+		
+		
+					$result = $ec_family_manager->deleteRow("DELETE FROM ec_taille_pointure WHERE taille_pointure_id in($id) ",array());
+		
+					
+					$data['response']="ok";
+		
+					echo json_encode($data);
+		
+		
+				break;
 
 	default:	
 
