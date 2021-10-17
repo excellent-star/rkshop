@@ -45,4 +45,5 @@
         <script src="assets/assets_backend/plugins/NotificationStyles/js/snap.svg-min.js" type="text/javascript"></script>
         <script src="assets/assets_backend/plugins/toastr/toastr.min.js" type="text/javascript"></script>
 
-        
+        <!-- ckeditor js -->
+        <script src="assets/assets_backend/plugins/ckeditor/ckeditor.js" type="text/javascript"></script>

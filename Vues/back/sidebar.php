@@ -26,12 +26,12 @@
                                    
                                 </ul>
                             </li>
-                            <li><a><i class="material-icons">text_format</i>Gestion d'articles<span class="fa arrow"></span></a>
+                            <li><a><i class="material-icons">text_format</i>Gestion des articles<span class="fa arrow"></span></a>
                                 <ul class="nav nav-second-level">
-                                    <li><a href="forms_basic.html">Basic Forms</a></li>
-                                    <li><a href="form_file_upload.html">Forms File Upload</a></li>
-                                    <li><a href="forms_editor_ck.html">CK Editor</a></li>
-                                    <li><a href="forms_emoji.html">Forms Emoji</a></li>
+                                    <li><a  href="?p=<?= $fonction->double_cryptage("list_article_page");?>">Listes</a></li>
+                                    <li><a href="?p=<?= $fonction->double_cryptage("add_article_page");?>">Ajouter</a></li>
+                                    <!-- <li><a href="forms_editor_ck.html">CK Editor</a></li>
+                                    <li><a href="forms_emoji.html">Forms Emoji</a></li> -->
                                 </ul>
                             </li>
                             

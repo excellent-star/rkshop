@@ -1402,6 +1402,28 @@ case 'run_delete_many_colors':
 		
 				break;
 
+	case 'list_article_page': 
+
+		$ec_family_manager = new Ec_familleManager($db);
+
+		$articles = $ec_family_manager->getRows("SELECT * FROM ec_article WHERE   ORDER BY article_id DESC");
+
+		require("Vues/back/product_list_article_page.php");
+
+
+
+
+
+		        break;
+
+	case 'add_article_page': 
+
+				require("Vues/back/product_add_article_page.php");
+
+
+				
+				break;
+
 	default:	
 
 	
