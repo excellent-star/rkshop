@@ -1589,6 +1589,11 @@ case 'run_delete_many_colors':
 			if($section=="taille_radio_input"){
 
 
+				
+				// echo json_encode($_POST);
+				// die();
+
+
 				$option = "taille";
 
 
@@ -1647,6 +1652,96 @@ case 'run_delete_many_colors':
 
 
 		 }
+
+
+
+
+
+
+						$taille=array();
+						$qte_taille=0;
+						if(!empty($_POST['taille_id'])){
+						foreach ($_POST['taille_id'] as $key => $value) {
+						if(in_array($value, array_keys($_POST))){
+						if(!empty($_POST[$value])){
+						array_push($taille, $value.':'.$_POST[$value]);
+						$qte_taille+=intval($_POST[$value]);
+						}
+						}
+						}
+						}
+
+						if(!empty($_POST['couleur_id'])){
+						foreach ($_POST['couleur_id'] as $key => $value) {
+
+						}
+						}
+
+						$couleur=array();
+						$qte_couleur=0;
+
+						
+						if(!empty($taille))
+						$_POST['produit_taille']=implode(',', $taille);
+						else
+						$_POST['produit_taille']='';
+
+						if(!empty($couleur))
+						$_POST['produit_couleur']=implode(',', $couleur);
+						else
+						$_POST['produit_couleur']='';
+
+
+						$_POST['produit_quantite']=$qte_taille;
+						$POST['taille_id']=$_POST['taille_id'];
+						$POST['couleur_id']=$_POST['couleur_id'];
+
+						// var_dump($_POST['couleur_id']);
+						// die();
+
+
+						$donnees=array();
+						if(!empty($POST['taille_id'])){
+						foreach ($POST['taille_id'] as $cle => $valeur) {
+						$tailleQte=$valeur.':'.$_POST[$valeur];
+						foreach ($POST['couleur_id'] as $key => $value) {
+						if(!empty($value)){
+						$value=str_replace(' ', '_', $value);
+						$nouveau=explode('|', $value);
+						$nouveau0=!empty($nouveau[0])?$nouveau[0]:'';
+						$nouveau1=!empty($nouveau[1])?$nouveau[1]:'';
+						if($valeur==$nouveau[0]){
+						$donnees['atcq_taille']=$valeur;
+						$donnees['atcq_qte']=$_POST[$value];
+
+						$donnees['atcq_couleur']=$nouveau[1];
+						// $donnees['produit_id']=$reponse;
+
+						$quantity = $donnees['atcq_qte'];
+
+
+							$parametre_article_store = $ec_family_manager->insertRow("INSERT INTO ec_parametre_article(parametre_article_couleur,parametre_article_taille_pointure,parametre_article_quantite,article_id) VALUES(?,?,?,?)",array($nouveau[1],$valeur,$quantity,$article_store_id));
+
+
+							$ec_parametre_liste_store =  $ec_family_manager->insertRow("INSERT INTO ec_parametre_liste(parametre_liste_liste,parametre_liste_etat,parametre_base_id) VALUES(?,?,?)",array($valeur,1,1));
+
+						// $couleur_taille=new atout_taille_couleur_qte($donnees);
+						// $Mcouleur_taille=new atout_taille_couleur_qteManager($db);
+						// $rep=$Mcouleur_taille->Enregistrer($couleur_taille);
+
+
+
+						}
+						}
+						}
+
+						}
+						}
+
+
+
+
+
 
 
 
