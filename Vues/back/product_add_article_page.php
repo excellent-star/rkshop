@@ -282,7 +282,59 @@
 
                                                         <div style="display:none;" id="pointure_couleur_section_to_display">
 
-                                                          <h2>Pointure</h2>
+                                                          
+                                                                                         <div>
+
+                                                  
+                                   
+                                                    <div class="row">
+                                                        <div class="col-md-12">
+                                                            <div class="form-group" style="overflow-x:auto;">
+                                                                <label>Pointure *(Optionel) et quantité || Couleur *(Optionel) et quantité</label>
+                                                                <table class="table taille_couleur" style="width: 100%">
+                                                                    <?php if(!empty($liste_pointure)): ?>
+                                                                    <?php foreach ($liste_pointure as $key => $value): ?>
+                                                                    <tr>
+                                                                        <td style="width: 15%;">
+                                                                            <div class="checkbox">
+                                                                                <label style="font-size: 16px;color:black;font-weight:12px;">
+                                                                                <input style="opacity: 1 !important;position:static !important;"   type="checkbox" value="<?=$value->taille_pointure_libelle; ?>" name="taille_id[]">
+                                                                                <?=$value->taille_pointure_libelle; ?>
+                                                                                </label>
+                                                                                <input class="nombre_taille" style="width: 60px;" type="number"  name="<?=$value->taille_pointure_libelle;?>">
+                                                                            </div>
+                                                                        </td>
+                                                                        <td style="width: 85%;">
+                                                                            <?php $la_taille=$value->taille_pointure_libelle; ?>
+                                                                            <?php if(!empty($liste_couleur)): ?>
+                                                                            <?php foreach ($liste_couleur as $key => $val): ?>
+                                                                            <div class="checkbox affiche_couleur" style="display: none;">
+                                                                                <label style="font-size: 16px;color:black;font-weight:12px;">
+                                                                                <input style="position:static !important;left:0px !importantn;opacity:1 !important;" class="input_couleur" type="checkbox" value="<?=$la_taille.'|'.$val->article_couleur_libelle; ?>" name="couleur_id[]">
+                                                                                <?=$val->article_couleur_libelle; ?>
+                                                                                </label>
+                                                                                <input class="nombre_couleur" style="width: 60px;" type="number" name="<?=$la_taille.'|'.$val->article_couleur_libelle; ?>">
+                                                                            </div>
+                                                                            <?php endforeach ?>
+                                                                            <?php endif ?>
+                                                                        </td>
+                                                                    </tr>
+                                                                    <?php endforeach ?>
+                                                                    <?php endif ?>
+                                                                    <tr>
+                                                                        <div style="display: none;" class="count_couleur"><?=count($liste_couleur)  ?></div>
+                                                                        <!-- <td><button class="btn btn-default btn-xs tab_9">Ajouter une taille</button> </td>
+                                                                        <td><button class="btn btn-default btn-xs tab_4">Ajouter une couleur</button></td> -->
+                                                                    </tr>
+                                                                </table>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+
+
+                                                    </div>
+
 
                                                         </div>
 
@@ -991,24 +1043,24 @@ $(".save_produit_btn").click(function(e){
                                             console.log(data);
 
 
-                                            // if(data.code==1){
+                                            if(data.code==1){
 
-                                            //     swal('Succès!', data.message, 'success').catch(swal.noop)
+                                                swal('Succès!', data.message, 'success').catch(swal.noop)
                                                
 
-                                            // }else{
+                                            }else{
 
-                                            //     swal('Problème!', data.message, 'success').catch(swal.noop)
+                                                swal('Problème!', data.message, 'success').catch(swal.noop)
 
                                                
-                                            // }
+                                            }
 
 
-                                            // setInterval(function(){ 
+                                            setInterval(function(){ 
 
-                                            //     window.open("?p=<?= $fonction->double_cryptage("list_article_page");?>","_self");
+                                                window.open("?p=<?= $fonction->double_cryptage("list_article_page");?>","_self");
 
-                                            //  }, 3000);
+                                             }, 3000);
                                             
 
                                             
@@ -1030,6 +1082,62 @@ $(".save_produit_btn").click(function(e){
                     }
 
                      if(checked_radio_input_value=="pointure_radio_input"){
+
+
+
+
+                         formData = new FormData(this);
+
+                          
+
+
+
+                            $.ajax({
+
+
+                                        url:"?p=<?= $fonction->double_cryptage("run_add_article");?>",
+                                        type:"POST",
+                                        dataType:"JSON",
+                                        processData:false,
+                                        contentType:false,
+                                        data:formData,
+                                        success:function(data){
+
+
+                                            console.log(data);
+
+
+                                            if(data.code==1){
+
+                                                swal('Succès!', data.message, 'success').catch(swal.noop)
+                                               
+
+                                            }else{
+
+                                                swal('Problème!', data.message, 'success').catch(swal.noop)
+
+                                               
+                                            }
+
+
+                                            setInterval(function(){ 
+
+                                                window.open("?p=<?= $fonction->double_cryptage("list_article_page");?>","_self");
+
+                                             }, 3000);
+                                            
+
+                                            
+
+
+                                           
+
+
+                                        }
+
+                                            
+                                    });
+
 
 
                           

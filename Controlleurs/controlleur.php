@@ -1438,6 +1438,9 @@ case 'run_delete_many_colors':
 				// die();
 
 
+				$liste_pointure = $ec_family_manager->getRows("SELECT * FROM ec_taille_pointure WHERE taille_pointure_type=1",array());
+
+
 
 
 
@@ -1586,7 +1589,7 @@ case 'run_delete_many_colors':
 			}
 
 
-			if($section=="taille_radio_input"){
+			if($section=="taille_radio_input" || $section=="pointure_radio_input"){
 
 
 				
@@ -1594,11 +1597,60 @@ case 'run_delete_many_colors':
 				// die();
 
 
-				$option = "taille";
+						$taille=array();
+						$qte_taille=0;
+						if(!empty($_POST['taille_id'])){
+						foreach ($_POST['taille_id'] as $key => $value) {
+						if(in_array($value, array_keys($_POST))){
+						if(!empty($_POST[$value])){
+						array_push($taille, $value.':'.$_POST[$value]);
+						$qte_taille+=intval($_POST[$value]);
+						}
+						}
+						}
+						}
+
+						if(!empty($_POST['couleur_id'])){
+						foreach ($_POST['couleur_id'] as $key => $value) {
+
+						}
+						}
+
+						$couleur=array();
+						$qte_couleur=0;
 
 
 
-				$article_store_id = $ec_family_manager->insertRowChrisHede1("INSERT INTO ec_article(categorie_id,article_libelle,article_description,article_prix,marque_id,article_qte,article_qtestock,article_option) VALUES(?,?,?,?,?,?,?,?)",array($product_category,$product_libelle,$prodcut_description,$product_price,$product_brand,$product_quantity,$product_quantity,$option));
+				if($section=="taille_radio_input"){
+
+
+
+					$option = "taille";
+
+
+
+				$article_store_id = $ec_family_manager->insertRowChrisHede1("INSERT INTO ec_article(categorie_id,article_libelle,article_description,article_prix,marque_id,article_qte,article_qtestock,article_option) VALUES(?,?,?,?,?,?,?,?)",array($product_category,$product_libelle,$prodcut_description,$product_price,$product_brand,$qte_taille,$qte_taille,$option));
+
+
+
+
+				}else{
+
+
+					$option = "pointure";
+
+
+
+					$article_store_id = $ec_family_manager->insertRowChrisHede1("INSERT INTO ec_article(categorie_id,article_libelle,article_description,article_prix,marque_id,article_qte,article_qtestock,article_option) VALUES(?,?,?,?,?,?,?,?)",array($product_category,$product_libelle,$prodcut_description,$product_price,$product_brand,$qte_taille,$qte_taille,$option));
+
+
+				}
+
+
+			
+
+
+				
 
 
 
@@ -1658,27 +1710,7 @@ case 'run_delete_many_colors':
 
 
 
-						$taille=array();
-						$qte_taille=0;
-						if(!empty($_POST['taille_id'])){
-						foreach ($_POST['taille_id'] as $key => $value) {
-						if(in_array($value, array_keys($_POST))){
-						if(!empty($_POST[$value])){
-						array_push($taille, $value.':'.$_POST[$value]);
-						$qte_taille+=intval($_POST[$value]);
-						}
-						}
-						}
-						}
-
-						if(!empty($_POST['couleur_id'])){
-						foreach ($_POST['couleur_id'] as $key => $value) {
-
-						}
-						}
-
-						$couleur=array();
-						$qte_couleur=0;
+						
 
 						
 						if(!empty($taille))
@@ -1720,10 +1752,23 @@ case 'run_delete_many_colors':
 						$quantity = $donnees['atcq_qte'];
 
 
+
+
+
 							$parametre_article_store = $ec_family_manager->insertRow("INSERT INTO ec_parametre_article(parametre_article_couleur,parametre_article_taille_pointure,parametre_article_quantite,article_id) VALUES(?,?,?,?)",array($nouveau[1],$valeur,$quantity,$article_store_id));
 
 
-							$ec_parametre_liste_store =  $ec_family_manager->insertRow("INSERT INTO ec_parametre_liste(parametre_liste_liste,parametre_liste_etat,parametre_base_id) VALUES(?,?,?)",array($valeur,1,1));
+
+							if($section=="taille_radio_input"){
+
+								$ec_parametre_liste_store =  $ec_family_manager->insertRow("INSERT INTO ec_parametre_liste(parametre_liste_liste,parametre_liste_etat,parametre_base_id) VALUES(?,?,?)",array($valeur,1,1));
+							}else{
+
+
+								$ec_parametre_liste_store =  $ec_family_manager->insertRow("INSERT INTO ec_parametre_liste(parametre_liste_liste,parametre_liste_etat,parametre_base_id) VALUES(?,?,?)",array($valeur,1,2));
+							}
+
+							
 
 						// $couleur_taille=new atout_taille_couleur_qte($donnees);
 						// $Mcouleur_taille=new atout_taille_couleur_qteManager($db);
@@ -1737,6 +1782,10 @@ case 'run_delete_many_colors':
 
 						}
 						}
+
+
+
+					
 
 
 
