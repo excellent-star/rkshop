@@ -31,6 +31,16 @@ function insert_row($that,$query, $params){
     }  
 }
 
+function insert_rowchrishede1($that,$query, $params){
+    try{ 
+        $stmt = $that->prepare($query); 
+        $stmt->execute($params);
+        return $that->lastInsertId();
+    }catch(PDOException $e){
+    throw new Exception($e->getMessage());
+    }  
+}
+
 function update_row($that,$query, $params){
     try{ 
         $stmt = $that->prepare($query); 

@@ -1,6 +1,7 @@
 <?php 
 
 
+
 $taille=array();
 $qte_taille=0;
 if(!empty($_POST['taille_id'])){

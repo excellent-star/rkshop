@@ -1363,6 +1363,7 @@ case 'run_delete_many_colors':
 		
 				
 				break;
+
 		
 		
 	case 'run_delete_shoeSize': 
@@ -1418,11 +1419,151 @@ case 'run_delete_many_colors':
 
 	case 'add_article_page': 
 
+
+				$ec_family_manager = new Ec_familleManager($db);
+
+				$categories = $ec_family_manager->getRows("SELECT * FROM ec_categorie");
+
+				$brands = $ec_family_manager->getRows("SELECT * FROM ec_marque");
+
 				require("Vues/back/product_add_article_page.php");
 
 
 				
 				break;
+
+	case 'run_add_article': 
+
+		    $prodcut_description = !empty($_POST['prodcut_description'])?$_POST['prodcut_description']:'';
+		    $product_brand = !empty($_POST['product_brand'])?$_POST['product_brand']:'';
+		    $product_category = !empty($_POST['product_category'])?$_POST['product_category']:'';
+		    $product_price = !empty($_POST['product_price'])?$_POST['product_price']:'';
+		    $product_quantity = !empty($_POST['product_quantity'])?$_POST['product_quantity']:'';
+		    $product_libelle = !empty($_POST['product_libelle'])?$_POST['product_libelle']:'';
+
+
+		    $section = !empty($_POST['section'])?$_POST['section']:'';
+
+		    $inputoptions = !empty($_POST['inputoptions'])?$_POST['inputoptions']:'';
+		    $inputvalues = !empty($_POST['inputvalues'])?$_POST['inputvalues']:'';
+
+
+			// var_dump($_POST['inputoptions']);
+			// die();
+
+			
+
+		
+
+			if($section=="option_radio_input"){
+
+
+			$option = "option";
+
+			
+
+
+				$ec_family_manager = new Ec_familleManager($db);
+
+				
+
+				$article_store_id = $ec_family_manager->insertRowChrisHede1("INSERT INTO ec_article(categorie_id,article_libelle,article_description,article_prix,marque_id,article_qte,article_qtestock,article_option) VALUES(?,?,?,?,?,?,?,?)",array($product_category,$product_libelle,$prodcut_description,$product_price,$product_brand,$product_quantity,$product_quantity,$option));
+
+
+
+
+				
+
+
+				if(isset($_FILES)){
+
+                           $images = $_FILES['image_libelle'];
+
+						   $imagesName = $images['name'];
+						   $imagesTpmName  = $images['tmp_name'];
+
+						  $removed_images_str = $_POST['removed_images_str'];
+
+						  $removed_images_array = explode(',',$removed_images_str);
+
+
+						 foreach($imagesName as $key => $imagename ){
+
+							       if(!in_array($imagename,$removed_images_array)){
+
+
+									
+
+
+
+							
+
+									$fileTmpName = $imagesTpmName[$key];
+									
+									$fileExt = explode('.',$imagename);
+									$fileActualExt = strtolower(end($fileExt));
+									$imageNewName = uniqid('',true).".".$fileActualExt;
+									$fileDestination = 'assets/images/articles/'.$imageNewName;
+									move_uploaded_file($fileTmpName,$fileDestination);
+
+
+									$images_store = $ec_family_manager->insertRow("INSERT INTO ec_image(image_url,article_id) VALUES(?,?)",array($imageNewName,$article_store_id));
+
+
+
+									
+									
+
+
+
+									    
+								   }
+						 }
+
+						
+
+
+				}
+
+				if(isset($inputoptions) || isset($inputvalues)){
+
+
+
+					 foreach($inputoptions as $key =>  $input){
+
+						 
+							$option_store = $ec_family_manager->insertRow("INSERT INTO ec_option_parametre(option_parametre_parametre,option_parametre_libelle,article_id) VALUES(?,?,?) ",array($input,$inputvalues[$key],$article_store_id));
+
+						 
+					 }
+
+
+					     
+				}
+
+
+
+
+
+					
+
+			
+			 
+
+
+
+
+
+
+				$data['message'] = "Cet article est ajouté avec succès";
+				$data['code'] = 1;
+			}
+			
+
+		      echo json_encode($data);
+
+
+		        break;
 
 	default:	
 

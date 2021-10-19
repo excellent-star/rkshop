@@ -62,10 +62,12 @@
                                                
                                                 <div class="form-group">
                                                     <label style="font-size:16px;color:#26A69A;" for="product_category">Catégorie article <span class="text-danger">*</span></label>
-                                                    <select class="" name="product_category" id="product_category">
-                                                          <option value="a">a</option>
-                                                          <option value="b">b</option>
-                                                          <option value="c">c</option>
+                                                    <select class="" name="product_category" id="product_category" required>
+                                                           <?php foreach($categories as $category) :?>
+
+                                                             <option value="<?=$category->categorie_id;?>"><?=$category->categorie_libelle;?></option>
+
+                                                            <?php  endforeach;?>
                                                     </select>
                                                   
                                                 </div>
@@ -73,20 +75,22 @@
                                                     <label style="font-size:16px;color:#26A69A;" for="product_brand">Marque article </label>
                                                     <select class="" name="product_brand" id="product_brand">
                                                           <option value="">Selectionner une marque</option>
-                                                          <option value="a">a</option>
-                                                          <option value="b">b</option>
-                                                          <option value="c">c</option>
+                                                          <?php foreach($brands as $brand) :?>
+
+                                                             <option value="<?=$brand->marque_id;?>"><?=$brand->marque_libelle;?></option>
+
+                                                            <?php  endforeach;?>
                                                     </select>
                                                   
                                                 </div>
                                                 <div class="form-group">
                                                     <label style="font-size:16px;color:#26A69A;" for="">Libellé article <span class="text-danger">*</span></label>
-                                                    <input type="text" class="form-control" id="product_name"  placeholder="Nom  du Produit" required>
+                                                    <input type="text" class="form-control" id="product_name" name="product_libelle"  placeholder="Nom  du Produit" required>
                                                     
                                                 </div>
                                                 <div class="form-group">
                                                     <label style="font-size:16px;color:#26A69A;" for="">Prix article <span class="text-danger">*</span></label>
-                                                    <input type="number" class="form-control" id="product_price"  placeholder="Prix  du Produit" required>
+                                                    <input type="number" class="form-control" id="product_price" name="product_price"  placeholder="Prix  du Produit" required>
                                                     
                                                 </div>
 
@@ -134,8 +138,8 @@
                                                     <thead>
                                                     <tr>
                                                         <td style="display: none;"></td>
-                                                        <td style="width: 25%;text-align: ;font-size: 25px;">Images</td>
-                                                        <td style="width: 25%;text-align: ;font-size: 25px;">Action</td>
+                                                        <td style="width: 25%;text-align: 0px;font-size: 25px;">Images</td>
+                                                        <td style="width: 25%;text-align: opx;font-size: 25px;">Action</td>
                                                     </tr>
                                                     </thead>
                                                     <tbody class="ajout_images">
@@ -147,15 +151,21 @@
 
                                                 <div class="form-group">
 
-                                                     <div>
-                                                    <input type="radio" id="option" name="section" value="option"
-                                                            checked>
-                                                    <label for="option">Option</label>
-                                                    </div>
-
+                                                  
                                                     <div>
-                                                    <input type="radio" id="taille_couleur_pointure" name="section" value="taille_couleur_pointure">
-                                                    <label for="taille_couleur_pointure">Taille, Couleur et Pointure</label>
+                                                        <input type="radio" id="option_radio_input" name="section" value="option_radio_input"
+                                                                checked>
+                                                        <label for="option_radio_input">Option</label>
+                                                        </div>
+
+                                                        <div>
+                                                        <input type="radio" id="taille_radio_input" name="section" value="taille_radio_input">
+                                                        <label for="taille_radio_input">Taille</label>
+                                                        </div>
+
+                                                        <div>
+                                                        <input type="radio" id="pointure_radio_input" name="section" value="pointure_radio_input">
+                                                        <label for="pointure_radio_input">Pointure</label>
                                                     </div>
 
                                                        
@@ -164,15 +174,49 @@
                                                 <div class="form-group">
 
                                                         <div style="display: none;" id="option_section_to_display">
+
+
+                                                             <div class="input-field">
+                                                                  <table class="table table-bordered" id="table_field">
+                                                                       <tr>
+                                                                             <th>Option</th>
+                                                                             <th>Value</th>
+                                                                             <th><input class="btn" type="button" name="add" id="add" value="Ajouter"></th>
+                                                                       </tr>
+                                                                       
+
+                                                                  </table>
+                                                             </div>
+
+                                                            <div class="form-group">
+                                                                <label style="font-size:16px;color:#26A69A;" for="">Quantité <span class="text-danger">*</span></label>
+                                                                <input type="number" name="product_quantity" class="form-control" id="product_quantity"  placeholder="quantité  du Produit">
+                                                                
+                                                            </div>
                                                               
                                                         </div>
 
-                                                        <div style="display:none;" id="tcp_section_to_display">
+                                                        <div style="display:none;" id="taille_couleur_section_to_display">
+
+
+                                                            <h2>Taille</h2>
+
+                                                        </div>
+
+                                                        <div style="display:none;" id="pointure_couleur_section_to_display">
+
+                                                          <h2>Pointure</h2>
 
                                                         </div>
 
 
 
+                                                </div>
+
+
+
+                                                <div style="text-align: center;margin-top: 5px;">
+                                                    <button type="submit" class="btn save_product_btn">Sauvegarder</button>
                                                 </div>
 
 
@@ -326,6 +370,305 @@
                 CKEDITOR.replace('product_description');
             });
         </script>
+
+
+
+           <script>
+
+
+           // all this part is made for image treatment
+
+
+                function readURL(input) {
+                    $(".loading").show();
+                    if (input.files && input.files[0]) {
+                        var countFile=Object.keys(input.files).length;
+                        countFile=parseInt(countFile);
+                        var j=0;
+                        $(".table_image").show();
+                        for(i=0; i<countFile; i++){
+                            var reader = new FileReader();
+                            // alert(input.files[i].name);
+                        reader.onload = function (e) {
+                            j++;
+                            var tr='';
+                            tr+='<tr>';
+                            tr+='<td style="display: none;">'+input.files[j-1].name+'</td>';
+                            tr+='<td><img style="max-width:100%;max-height:100%;width:100px;height:100px;margin-top:5px;" src="'+e.target.result+'"></td>';
+                            tr+='<td><button class="supprimer btn btn-red"><i class="fa fa-trash"></i> Supprimer </button></td>';
+                            tr+='</tr>';
+                            $(".ajout_images").append(tr);
+                            
+                            if(j==countFile)
+                                $(".loading").hide();
+                        };
+                        reader.readAsDataURL(input.files[i]);
+
+                        }
+                        
+                    }
+                }
+
+                $(document).ready(function(){
+
+                $("#importer").click(function(e){
+                    e.preventDefault();
+                    $("input[name='image_libelle[]']").trigger("click");
+                });
+
+            
+
+                var removed_images=[];
+                $(".ajout_images").on("click",".supprimer",function(event){
+                event.preventDefault();
+                var objet=$(this).closest("tr");
+                var libelle_image=objet.find("td:first").text();
+                objet.remove();
+                removed_images.push(libelle_image);
+                removed_images_str=removed_images.join();
+                $("input[name='removed_images_str']").val(removed_images_str);
+                });
+
+                $(".button_valider").click(function(e){
+                e.preventDefault();
+                $(".image_libelle").trigger("click");
+                });
+            });
+
+
+
+
+            // this part is made for section display 
+
+            var checked_radio_input_value = document.querySelector('input[name="section"]').value;
+
+           
+
+            if(checked_radio_input_value=="option_radio_input"){
+
+
+                
+
+
+                 $("#option_section_to_display").css('display','block');
+                 $("#taille_couleur_section_to_display").css('display','none');
+                 $("#pointure_couleur_section_to_display").css('display','none');
+            }
+
+
+            $('input[name="section"]').change(function(e){
+
+                    
+                        checked_radio_input_value = e.target.value;
+
+                         if(checked_radio_input_value=="option_radio_input"){
+
+
+                                
+
+
+                                $("#option_section_to_display").css('display','block');
+                                $("#taille_couleur_section_to_display").css('display','none');
+                                $("#pointure_couleur_section_to_display").css('display','none');
+                            }
+
+
+                             if(checked_radio_input_value=="taille_radio_input"){
+
+
+                
+
+
+                                $("#option_section_to_display").css('display','none');
+                                $("#taille_couleur_section_to_display").css('display','block');
+                                $("#pointure_couleur_section_to_display").css('display','none');
+                            }
+
+                             if(checked_radio_input_value=="pointure_radio_input"){
+
+
+                
+
+
+                                $("#option_section_to_display").css('display','none');
+                                $("#taille_couleur_section_to_display").css('display','none');
+                                $("#pointure_couleur_section_to_display").css('display','block');
+                            }
+                                    
+            });
+
+
+
+
+            // this part is for option section 
+
+            var html = '<tr><td><input class="form-control" type="text" name="inputoptions[]" required></td><td><input type="text" name="inputvalues[]" required></td><td><input type="button" class="btn btn-sm btn-danger" name="remove" value="Supprimer" id="remove"></td></tr>';
+
+            
+
+            $('#add').click(function(){
+
+                  $("#table_field").append(html);
+            });
+
+            $("#table_field").on('click','#remove',function(){
+                 
+                  $(this).closest('tr').remove();
+            });
+
+
+
+
+            // here I begin with  my product store 
+
+
+            $("#add_product_form").submit(function(e){
+
+
+                   e.preventDefault();
+
+                    var textarea_value = CKEDITOR.instances['product_description'].getData();
+
+
+                    // alert(checked_radio_input_value);
+
+
+                    if(checked_radio_input_value=="option_radio_input"){
+
+
+
+                        input_product_quantity = $('input[name="product_quantity"]').val();
+
+
+                        if(input_product_quantity==""){
+
+
+                              alert("la quantité est obligatoire");
+                        }else{
+
+
+
+
+                            formData = new FormData(this);
+
+
+
+                            $.ajax({
+
+
+                                        url:"?p=<?= $fonction->double_cryptage("run_add_article");?>",
+                                        type:"POST",
+                                        dataType:"JSON",
+                                        processData:false,
+                                        contentType:false,
+                                        data:formData,
+                                        success:function(data){
+
+
+                                            console.log(data);
+
+
+                                            if(data.code==1){
+
+                                                swal('Succès!', data.message, 'success').catch(swal.noop)
+                                               
+
+                                            }else{
+
+                                                swal('Problème!', data.message, 'success').catch(swal.noop)
+
+                                               
+                                            }
+
+
+                                            setInterval(function(){ 
+
+                                                window.open("?p=<?= $fonction->double_cryptage("list_article_page");?>","_self");
+
+                                             }, 3000);
+                                            
+
+                                            
+
+
+                                           
+
+
+                                        }
+
+                                            
+                                    });
+
+
+
+
+
+                        }
+
+
+                          
+                    }
+
+                     if(checked_radio_input_value=="taille_radio_input"){
+
+
+                          
+                    }
+
+                     if(checked_radio_input_value=="pointure_radio_input"){
+
+
+                          
+                    }
+
+
+
+                        
+            });
+
+
+
+
+
+
+            
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+           </script>
 
 
 

@@ -2,8 +2,10 @@
 
 
 
-//Class Manager permettant de manipuler la classe Ec_famille
-class Ec_familleManager{
+
+
+//Class Manager permettant de manipuler la classe Ec_option_parametre
+class Ec_option_parametreManager{
     use db;
     //l'instance de la connexion à la base de donnees
     private $bdd;
@@ -15,20 +17,20 @@ class Ec_familleManager{
     
     
     //Fonction enregistrer permettant d'enregistrer ou d'ajouter une ligne.
-    //Le parametre est forcement un objet de la classe Ec_famille, generalement, c'est le $_POST, c'est un tableau a clef valeur qui est d'abord passer par la classe Ec_famille
-    //Exemple: $ME=new ManagerEc_famille($bdd)
-    //Exemple: $E=new Ec_famille(array('famille_libelle'=>$valeur, 'famille_description'=>$valeur, 'famille_image'=>$valeur, 'famille_created_at'=>$valeur, 'famille_etat'=>$valeur ))
+    //Le parametre est forcement un objet de la classe Ec_option_parametre, generalement, c'est le $_POST, c'est un tableau a clef valeur qui est d'abord passer par la classe Ec_option_parametre
+    //Exemple: $ME=new ManagerEc_option_parametre($bdd)
+    //Exemple: $E=new Ec_option_parametre(array('option_parametre_parametre'=>$valeur, 'option_parametre_libelle'=>$valeur, 'article_id'=>$valeur ))
     //Exemple: $E=$ME->Enregistrer($E)
-    public function Enregistrer(Ec_famille $ec_famille){
-    $array=array(trim($ec_famille->getFamille_libelle()),trim($ec_famille->getFamille_description()),trim($ec_famille->getFamille_image()),trim($ec_famille->getFamille_created_at()),trim($ec_famille->getFamille_etat()));
-    $sql="SELECT * FROM ec_famille WHERE famille_libelle=? AND famille_description=? AND famille_image=? AND famille_created_at=? AND famille_etat=?";
+    public function Enregistrer(Ec_option_parametre $ec_option_parametre){
+    $array=array(trim($ec_option_parametre->getOption_parametre_parametre()),trim($ec_option_parametre->getOption_parametre_libelle()),trim($ec_option_parametre->getArticle_id()));
+    $sql="SELECT * FROM ec_option_parametre WHERE option_parametre_parametre=? AND option_parametre_libelle=? AND article_id=?";
     $Q1=$this->bdd->prepare($sql);
     $Q1->execute($array);
     $donnees=$Q1->fetch(PDO::FETCH_ASSOC);
     $retour=!empty($donnees)?-1:0;
     //Verifier si les donnees existent deja sinon, il enregistre.
     if(empty($donnees)){
-    $sql="INSERT INTO ec_famille SET famille_libelle=?, famille_description=?, famille_image=?, famille_created_at=?, famille_etat=?";
+    $sql="INSERT INTO ec_option_parametre SET option_parametre_parametre=?, option_parametre_libelle=?, article_id=?";
     $Q=$this->bdd->prepare($sql);
     $Q->execute($array);
     $retour=$this->bdd->lastInsertId();
@@ -42,25 +44,25 @@ class Ec_familleManager{
     //Afficher($id=2) Renvoie une ligne specifiee par son identifiant en parametre; le resultat renvoye est un tableau.
     public function Afficher($id=""){
     if(empty($id))
-    $sql="SELECT * FROM ec_famille";
+    $sql="SELECT * FROM ec_option_parametre";
     else
-    $sql="SELECT * FROM ec_famille WHERE famille_id=?";
+    $sql="SELECT * FROM ec_option_parametre WHERE option_parametre_id=?";
     $array=array($id);
     $Q=$this->bdd->prepare($sql);
     $Q->execute($array);
     if(!empty($id)){
     $donnees=$Q->fetch(PDO::FETCH_ASSOC);
-    $ec_famille =!empty($donnees)?new Ec_famille($donnees):array();
+    $ec_option_parametre =!empty($donnees)?new Ec_option_parametre($donnees):array();
     }
     else
     while($donnees=$Q->fetch(PDO::FETCH_ASSOC))
-    $ec_famille[] = !empty($donnees)?new Ec_famille($donnees):array();
-    return !empty($ec_famille)?$ec_famille:[];
+    $ec_option_parametre[] = !empty($donnees)?new Ec_option_parametre($donnees):array();
+    return !empty($ec_option_parametre)?$ec_option_parametre:[];
     }
     
     
     public function Supprimer($id){
-    $sql="DELETE FROM ec_famille WHERE famille_id=?";
+    $sql="DELETE FROM ec_option_parametre WHERE option_parametre_id=?";
     $array=array($id);
     $Q=$this->bdd->prepare($sql);
     $Q->execute($array);
@@ -68,9 +70,9 @@ class Ec_familleManager{
     }
     
     
-    public function Modifier(Ec_famille $ec_famille){
-    $array=array(trim($ec_famille->getFamille_libelle()),trim($ec_famille->getFamille_description()),trim($ec_famille->getFamille_image()),trim($ec_famille->getFamille_created_at()),trim($ec_famille->getFamille_etat()) ,$ec_famille->getFamille_id());
-    $sql="UPDATE ec_famille SET famille_libelle=?, famille_description=?, famille_image=?, famille_created_at=?, famille_etat=? WHERE famille_id=?";
+    public function Modifier(Ec_option_parametre $ec_option_parametre){
+    $array=array(trim($ec_option_parametre->getOption_parametre_parametre()),trim($ec_option_parametre->getOption_parametre_libelle()),trim($ec_option_parametre->getArticle_id()) ,$ec_option_parametre->getOption_parametre_id());
+    $sql="UPDATE ec_option_parametre SET option_parametre_parametre=?, option_parametre_libelle=?, article_id=? WHERE option_parametre_id=?";
     $Q=$this->bdd->prepare($sql);
     $Q->execute($array);
     return $Q->rowCount();
@@ -86,7 +88,7 @@ class Ec_familleManager{
     if($valeur>=1){
     $alert='<div class="alert alert-success alert-dismissible">
     <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-    <strong>Succès!</strong>ec_famille enregistre avec succès.</div>';
+    <strong>Succès!</strong>ec_option_parametre enregistre avec succès.</div>';
     }else if($valeur==-1){
     $alert='<div class="alert alert-danger alert-dismissible"></span>
     <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
@@ -94,7 +96,7 @@ class Ec_familleManager{
     }else{
     $alert='<div class="alert alert-danger alert-dismissible"></span>
     <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-    <strong>Echec!</strong>Erreur,ec_famille non enregistre.</div>';
+    <strong>Echec!</strong>Erreur,ec_option_parametre non enregistre.</div>';
     }
     return $alert;
     }
@@ -105,11 +107,11 @@ class Ec_familleManager{
     if($valeur>=1){
     $alert='<div class="alert alert-success alert-dismissible">
     <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-    <strong>Succès! </strong>ec_famille supprimée avec succès.</div>';
+    <strong>Succès! </strong>ec_option_parametre supprimée avec succès.</div>';
     }else{
     $alert='<div class="alert alert-danger alert-dismissible">
     <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-    <strong>Echec!</strong>ec_famille non supprimee.</div>';
+    <strong>Echec!</strong>ec_option_parametre non supprimee.</div>';
     }
     return $alert;
     }
@@ -120,7 +122,7 @@ class Ec_familleManager{
     if($valeur>=1){
     $alert='<div class="alert alert-success alert-dismissible">
     <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-    Succès!ec_famille modifiee avec succès.</div>';
+    Succès!ec_option_parametre modifiee avec succès.</div>';
     }else{
     $alert='<div class="alert alert-danger alert-dismissible"></span>
     <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
@@ -141,10 +143,6 @@ class Ec_familleManager{
     public function insertRow($query, $params){
     return $this->insert_row($this->bdd,$query, $params);
     }
-
-    public function insertRowChrisHede1($query, $params){
-        return $this->insert_rowchrishede1($this->bdd,$query, $params);
-        }
     
     public function updateRow($query, $params){
     return $this->insertRow($query, $params);
@@ -171,6 +169,22 @@ class Ec_familleManager{
     }
     
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
