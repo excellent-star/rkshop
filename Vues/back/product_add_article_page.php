@@ -199,7 +199,84 @@
                                                         <div style="display:none;" id="taille_couleur_section_to_display">
 
 
-                                                            <h2>Taille</h2>
+
+
+
+                                                        <!-- <div class="form-group" style="display: none;">
+                                                        <label>Quantité en stock (Obligatoire)</label>
+                                                        <input type="number"  name="produit_quantite" class="form-control"  placeholder="Quantité de l'article" />
+                                                    </div> -->
+
+                                                    <div>
+
+                                                  
+                                   
+                                                    <div class="row">
+                                                        <div class="col-md-12">
+                                                            <div class="form-group" style="overflow-x:auto;">
+                                                                <label>Taille *(Optionel) et quantité || Couleur *(Optionel) et quantité</label>
+                                                                <table class="table taille_couleur" style="width: 100%">
+                                                                    <?php if(!empty($liste_taille)): ?>
+                                                                    <?php foreach ($liste_taille as $key => $value): ?>
+                                                                    <tr>
+                                                                        <td style="width: 15%;">
+                                                                            <div class="checkbox">
+                                                                                <label style="font-size: 16px;color:black;font-weight:12px;">
+                                                                                <input style="opacity: 1 !important;position:static !important;"   type="checkbox" value="<?=$value->taille_pointure_libelle; ?>" name="taille_id[]">
+                                                                                <?=$value->taille_pointure_libelle; ?>
+                                                                                </label>
+                                                                                <input class="nombre_taille" style="width: 60px;" type="number"  name="<?=$value->taille_pointure_libelle;?>">
+                                                                            </div>
+                                                                        </td>
+                                                                        <td style="width: 85%;">
+                                                                            <?php $la_taille=$value->taille_pointure_libelle; ?>
+                                                                            <?php if(!empty($liste_couleur)): ?>
+                                                                            <?php foreach ($liste_couleur as $key => $val): ?>
+                                                                            <div class="checkbox affiche_couleur" style="display: none;">
+                                                                                <label style="font-size: 16px;color:black;font-weight:12px;">
+                                                                                <input style="position:static !important;left:0px !importantn;opacity:1 !important;" class="input_couleur" type="checkbox" value="<?=$la_taille.'|'.$val->article_couleur_libelle; ?>" name="couleur_id[]">
+                                                                                <?=$val->article_couleur_libelle; ?>
+                                                                                </label>
+                                                                                <input class="nombre_couleur" style="width: 60px;" type="number" name="<?=$la_taille.'|'.$val->article_couleur_libelle; ?>">
+                                                                            </div>
+                                                                            <?php endforeach ?>
+                                                                            <?php endif ?>
+                                                                        </td>
+                                                                    </tr>
+                                                                    <?php endforeach ?>
+                                                                    <?php endif ?>
+                                                                    <tr>
+                                                                        <div style="display: none;" class="count_couleur"><?=count($liste_couleur)  ?></div>
+                                                                        <!-- <td><button class="btn btn-default btn-xs tab_9">Ajouter une taille</button> </td>
+                                                                        <td><button class="btn btn-default btn-xs tab_4">Ajouter une couleur</button></td> -->
+                                                                    </tr>
+                                                                </table>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+
+
+                                                    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                                            <!-- <h2>Taille</h2> -->
 
                                                         </div>
 
@@ -370,6 +447,285 @@
                 CKEDITOR.replace('product_description');
             });
         </script>
+
+
+
+
+
+<script>
+
+       // from pasco   
+       
+       $(document).ready(function(){
+
+$(".categorie_tbody").on("click",".description_suite",function(){
+       
+    var text=$(this).closest('tr').find('.texte').text();
+    $(".description_suite_texte").html(text);
+   
+});
+
+$(".save_produit_btn").click(function(e){
+    e.preventDefault();
+    $(".loading_article").show();
+    var formulaire=document.querySelector(".save_produit");
+    var formdata=new FormData(formulaire);
+    var images=$("input[name='libelle_image[]']").files;
+    formdata.append("libelle_image", images);
+    var lien_save_produit=$(".lien_save_produit").text();
+    var lien_page=$(".lien_page").text();  
+    // alert(lien_save_produit);
+     $.ajax({
+     // url: "Vues/Admin/save_produit.php",
+     url: "?p="+lien_save_produit,
+     type: "POST",
+     data: formdata,
+     contentType: false,  // dire à jQuery de ne pas définir le contentType
+     processData: false,  // dire à jQuery de ne pas traiter les données
+     success:function(rep){
+          // alert(rep);
+          $(".loading_article").hide();
+          if(parseInt(rep)>=1){
+            alert("Article enregistré avec succès!!");
+            window.location.reload();
+          }
+     }
+    });
+
+});
+
+       var count_couleur=$(".count_couleur").text();
+            count_couleur=parseInt(count_couleur);
+            $(".nombre_couleur").attr("readonly","");
+
+            $(".taille_couleur").on("click","input[name='taille_id[]']",function(e){
+                var objet=$(this).closest("tr");
+                var cocher=objet.find("input[name='taille_id[]']").prop("checked");
+                var valeur=objet.find(".nombre_taille").val();
+                if(parseInt(valeur)>0){
+                if(cocher==true)
+                    objet.find("td:eq(1)>.affiche_couleur").show();
+                else
+                    objet.find("td:eq(1)>.affiche_couleur").hide();
+                }else{
+                    objet.find("td:eq(1)>.affiche_couleur").hide();
+                }
+            });
+
+            $(".taille_couleur").on("keyup click",".nombre_taille",function(e){
+                var objet=$(this).closest("tr");
+                var valeur=objet.find(".nombre_taille").val();
+               
+                if(parseInt(valeur)>0){
+                var cocher=objet.find("input[name='taille_id[]']").prop("checked");
+
+                if(cocher==true)
+                    objet.find("td:eq(1)>.affiche_couleur").show();
+                else
+                    objet.find("td:eq(1)>.affiche_couleur").hide();
+                }else{
+                    objet.find("td:eq(1)>.affiche_couleur").hide();
+                }
+
+                for(i=0;i<count_couleur;i++){
+                        val_couleur=objet.find(".nombre_couleur:eq("+i+")").val();
+                        val_couleur=parseInt(val_couleur);
+                        if(!Number.isInteger(val_couleur)){
+                            objet.find(".input_couleur:eq("+i+")").removeAttr("disabled");
+                        }    
+                }
+
+            });
+
+
+            $(".taille_couleur").on("click",".input_couleur",function(e){
+                var objet=$(this).closest("tr");
+                for(var i=0;i<count_couleur;i++){
+                    var cocher=objet.find("input[name='couleur_id[]']:eq("+i+")").prop("checked");
+                    if(cocher)
+                        objet.find(".nombre_couleur:eq("+i+")").removeAttr("readonly");
+                }  
+            });
+
+            $(".taille_couleur").on("keyup click",".nombre_couleur",function(e){
+                var objet=$(this).closest("tr");
+                var nombre_taille=objet.find(".nombre_taille").val();
+                nombre_taille=parseInt(nombre_taille);
+
+                var valeur=objet.find(".nombre_couleur").val();
+               
+                var total=0;
+                var val_couleur;
+                var total_atteint=false;
+                var total_depasse=false;
+
+                for(var i=0;i<count_couleur;i++){
+                    val_couleur=objet.find(".nombre_couleur:eq("+i+")").val();
+                    val_couleur=parseInt(val_couleur);
+                   
+                    if(val_couleur>0)
+                        total+=val_couleur;
+
+                    if(total==nombre_taille){
+                        total_atteint=true;
+                        objet.find(".nombre_couleur").attr("border","");
+                    }else if(total>nombre_taille) {
+                        objet.find(".nombre_couleur:eq("+i+")").val("");
+                        total_depasse=true;
+                    }
+                }
+               
+                if(total_depasse){
+                    alert("Vous avez depassé le nombre total:"+nombre_taille);
+
+                    for(i=0;i<count_couleur;i++){
+                        val_couleur=objet.find(".nombre_couleur:eq("+i+")").val();
+                        val_couleur=parseInt(val_couleur);
+                        if(!Number.isInteger(val_couleur)){
+                            objet.find(".input_couleur:eq("+i+")").removeAttr("disabled");
+                        }    
+                    }
+                }
+
+                if(total_atteint){
+                    for(i=0;i<count_couleur;i++){
+                        val_couleur=objet.find(".nombre_couleur:eq("+i+")").val();
+                        val_couleur=parseInt(val_couleur);
+                        if(!Number.isInteger(val_couleur)){
+                            objet.find(".nombre_couleur:eq("+i+")").attr("readonly","");
+                            objet.find(".input_couleur:eq("+i+")").attr("checked",false);
+                            objet.find(".input_couleur:eq("+i+")").attr("disabled",true);
+                        }
+                       
+                    }
+                }
+               
+            });
+
+
+
+            $(".couleur_tbody").on("click",".couleur",function(event){
+                var objet=$(this).closest("tr");
+                var id=objet.find("td:eq(0)").text();
+                var libelle=objet.find("td:eq(2)").text();
+                $("input[name='_couleur_libelle']").val(libelle);
+                $("input[name='_couleur_id']").val(id);
+            });
+
+            $(".couleur_valider").click(function(){
+                var libelle = $("input[name='_couleur_libelle']").val();
+                var id = $("input[name='_couleur_id']").val();
+                $.post("Vues/Admin/modifier_table.php",{couleur_id:id,couleur_libelle:libelle,table:'couleur'},function(reponse){
+                    $(".couleur_annuler").trigger("click");
+                    $(".couleur_tbody").html(reponse);
+
+                });
+            })
+
+            $(".taille_tbody").on("click",".taille",function(event){
+                var objet=$(this).closest("tr");
+                var id=objet.find("td:eq(0)").text();
+                var libelle=objet.find("td:eq(2)").text();
+                $("input[name='_taille_libelle']").val(libelle);
+                $("input[name='_taille_id']").val(id);
+            });
+
+            $(".couleur_valider").click(function(){
+                var libelle = $("input[name='_taille_libelle']").val();
+                var id = $("input[name='_taille_id']").val();
+                $.post("Vues/Admin/modifier_table.php",{taille_id:id,taille_libelle:libelle,table:'taille'},function(reponse){
+                    $(".taille_annuler").trigger("click");
+                    $(".taille_tbody").html(reponse);
+
+                });
+            })
+
+              $(".categorie_tbody").on("click",".categorie",function(event){
+                var objet=$(this).closest("tr");
+                var id=objet.find("td:eq(0)").text();
+                var libelle=objet.find("td:eq(2)").text();
+                var img=objet.find("td:eq(6)").text();
+                // alert(id);
+                var description=objet.find("td:eq(3)").html();
+                // alert(description);
+                $("input[name='_categorie_libelle']").val(libelle);
+                $('textarea[name="_categorie_description"]').val(description);
+                $(".image_cat_mod").attr('src',img);
+                $("input[name='_image']").val(img);
+                $("input[name='_categorie_id']").val(id);
+            });
+
+            $(".couleur_valider").click(function(){
+                var libelle = $("input[name='_categorie_libelle']").val();
+                var description = $("textarea[name='_categorie_description']").val();
+                // alert(description)
+                var id = $("input[name='_categorie_id']").val();
+
+                var img = $("input[name='_image']").val();
+               
+                var formulaire=document.querySelector(".save_cat");
+                var formdata=new FormData(formulaire);
+                formdata.append("_image",img);
+                formdata.append("categorie_id",id);
+                formdata.append("categorie_libelle",libelle);
+                formdata.append("categorie_description",description);
+                formdata.append("table",'categorie');
+                var images=$("input[name='fichier_cat_mod']").files;
+                // alert(images);
+                formdata.append("categorie_image", images);
+               
+                 $.ajax({
+                 // url: "Vues/Admin/save_produit.php",
+                 url: "Vues/Admin/modifier_table.php",
+                 type: "POST",
+                 data: formdata,
+                 contentType: false,  // dire à jQuery de ne pas définir le contentType
+                 processData: false,  // dire à jQuery de ne pas traiter les données
+                 success:function(reponse){
+                    $(".categorie_annuler").trigger("click");
+                    $(".categorie_tbody").html(reponse);
+                    $("input[name='_categorie_libelle']").val("");
+                    $("textarea[name='_categorie_description']").val("");
+                    $("input[name='_categorie_id']").val("");
+                    $("input[name='_image']").val("");
+                    formdata.append("categorie_image", "");
+                    $('.image_cat_mod').attr('src', '');
+                    setTimeout("location.reload(false);", 1000);
+               
+                 }
+                });
+
+                // $.post("Vues/Admin/modifier_table.php",formdata,function(reponse){
+                //     alert('1');
+                //     $(".categorie_annuler").trigger("click");
+                //     $(".categorie_tbody").html(reponse);
+
+                // });
+            });
+
+
+
+
+            $(".joindre_image_cat").click(function(ev){
+                ev.preventDefault();
+                $(".im_cat").trigger("click");
+            });
+
+            $(".joindre_image_cat_mod").click(function(ev){
+                ev.preventDefault();
+                $(".im_cat_mod").trigger("click");
+            });
+        });
+
+</script>
+
+
+
+
+
+
+
+
 
 
 
@@ -610,6 +966,64 @@
                     }
 
                      if(checked_radio_input_value=="taille_radio_input"){
+
+
+
+
+                          formData = new FormData(this);
+
+                          
+
+
+
+                            $.ajax({
+
+
+                                        url:"?p=<?= $fonction->double_cryptage("run_add_article");?>",
+                                        type:"POST",
+                                        dataType:"JSON",
+                                        processData:false,
+                                        contentType:false,
+                                        data:formData,
+                                        success:function(data){
+
+
+                                            console.log(data);
+
+
+                                            // if(data.code==1){
+
+                                            //     swal('Succès!', data.message, 'success').catch(swal.noop)
+                                               
+
+                                            // }else{
+
+                                            //     swal('Problème!', data.message, 'success').catch(swal.noop)
+
+                                               
+                                            // }
+
+
+                                            // setInterval(function(){ 
+
+                                            //     window.open("?p=<?= $fonction->double_cryptage("list_article_page");?>","_self");
+
+                                            //  }, 3000);
+                                            
+
+                                            
+
+
+                                           
+
+
+                                        }
+
+                                            
+                                    });
+
+
+
 
 
                           

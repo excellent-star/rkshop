@@ -189,6 +189,7 @@
                                             <?php endif; ?>
                                         </select>
                                     </div>
+                                    
                                     <div class="form-group">
                                         <label>Libellé (Obligatoire)</label>
                                         <input type="text" required="" name="produit_libelle" class="form-control"  placeholder="Libellé de l'article" />

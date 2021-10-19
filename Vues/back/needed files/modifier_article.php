@@ -42,3 +42,5 @@ foreach ($couleur_simple_qte as $key => $value) {
 $couleur_qte[$key]=$value->atcq_taille.':'.$value->atcq_couleur.':'.$value->atcq_qte;
 }
 }
+
+

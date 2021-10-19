@@ -1426,6 +1426,29 @@ case 'run_delete_many_colors':
 
 				$brands = $ec_family_manager->getRows("SELECT * FROM ec_marque");
 
+
+
+
+
+				$liste_taille = $ec_family_manager->getRows("SELECT * FROM ec_taille_pointure WHERE taille_pointure_type=0",array());
+
+				$liste_couleur = $ec_family_manager->getRows("SELECT * FROM ec_article_couleur",array());
+
+				// var_dump($liste_couleur);
+				// die();
+
+
+
+
+
+
+
+
+
+
+
+
+
 				require("Vues/back/product_add_article_page.php");
 
 
@@ -1433,6 +1456,9 @@ case 'run_delete_many_colors':
 				break;
 
 	case 'run_add_article': 
+
+
+		$ec_family_manager = new Ec_familleManager($db);
 
 		    $prodcut_description = !empty($_POST['prodcut_description'])?$_POST['prodcut_description']:'';
 		    $product_brand = !empty($_POST['product_brand'])?$_POST['product_brand']:'';
@@ -1463,7 +1489,7 @@ case 'run_delete_many_colors':
 			
 
 
-				$ec_family_manager = new Ec_familleManager($db);
+				
 
 				
 
@@ -1558,6 +1584,87 @@ case 'run_delete_many_colors':
 				$data['message'] = "Cet article est ajouté avec succès";
 				$data['code'] = 1;
 			}
+
+
+			if($section=="taille_radio_input"){
+
+
+				$option = "taille";
+
+
+
+				$article_store_id = $ec_family_manager->insertRowChrisHede1("INSERT INTO ec_article(categorie_id,article_libelle,article_description,article_prix,marque_id,article_qte,article_qtestock,article_option) VALUES(?,?,?,?,?,?,?,?)",array($product_category,$product_libelle,$prodcut_description,$product_price,$product_brand,$product_quantity,$product_quantity,$option));
+
+
+
+
+				if(isset($_FILES)){
+
+					$images = $_FILES['image_libelle'];
+
+					$imagesName = $images['name'];
+					$imagesTpmName  = $images['tmp_name'];
+
+				   $removed_images_str = $_POST['removed_images_str'];
+
+				   $removed_images_array = explode(',',$removed_images_str);
+
+
+				  foreach($imagesName as $key => $imagename ){
+
+							if(!in_array($imagename,$removed_images_array)){
+
+
+							 
+
+
+
+					 
+
+							 $fileTmpName = $imagesTpmName[$key];
+							 
+							 $fileExt = explode('.',$imagename);
+							 $fileActualExt = strtolower(end($fileExt));
+							 $imageNewName = uniqid('',true).".".$fileActualExt;
+							 $fileDestination = 'assets/images/articles/'.$imageNewName;
+							 move_uploaded_file($fileTmpName,$fileDestination);
+
+
+							 $images_store = $ec_family_manager->insertRow("INSERT INTO ec_image(image_url,article_id) VALUES(?,?)",array($imageNewName,$article_store_id));
+
+
+
+							 
+							 
+
+
+
+								 
+							}
+				  }
+
+				 
+
+
+		 }
+
+
+
+
+
+
+
+
+
+
+		 	
+		 $data['message'] = "Cet article est ajouté avec succès";
+		 $data['code'] = 1;
+
+				  
+			}// end size
+
+			
 			
 
 		      echo json_encode($data);
