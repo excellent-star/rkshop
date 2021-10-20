@@ -4,7 +4,7 @@
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>Famille produit</title>
+        <title>Liste produit</title>
 
         <?php include('main_styles.php');?>
 
@@ -170,7 +170,7 @@
                                                         <td><?=$article->article_libelle;?></td>
                                                         
                                                         <td><?=$category->categorie_libelle;?></td>
-                                                        <td><?=$article->article_prix;?></td>
+                                                        <td><?=substr_replace($article->article_prix ,"", -3);?></td>
                                                         <td><?=implode(', ', $couleur_enregistree) ?></td>
                                                         <td><?=implode(', ', $taille_enregistree) ?></td>
                                                         <td><?=$article->article_qte;?></td>

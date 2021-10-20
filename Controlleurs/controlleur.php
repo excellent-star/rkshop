@@ -12,6 +12,12 @@ if(isset($_GET['p']) && !empty($_GET['p'])){
 }
 
 
+if(isset($_GET['id']) && !empty($_GET['id'])){
+
+	$id = $fonction->double_decryptage($_GET['id']);
+}
+
+
 
 
 
@@ -1856,6 +1862,95 @@ case 'run_delete_many_colors':
 
 
 				break;
+
+
+	case 'view_article_page': 
+
+
+		$ec_family_manager = new Ec_familleManager($db);
+
+		$result_check = $ec_family_manager->getRow("SELECT * FROM ec_article WHERE article_id=?",array($id));
+
+		if($result_check){
+
+
+
+
+			// here the content view
+
+			$category = $ec_family_manager->getRow("SELECT * FROM ec_categorie",array($result_check->categorie_id));
+
+
+			
+			$features = $ec_family_manager->getRows("SELECT * FROM ec_option_parametre WHERE article_id=?",array($result_check->article_id));
+
+
+			$images = $ec_family_manager->getRows("SELECT * FROM ec_image WHERE article_id=?",array($result_check->article_id));
+
+
+
+
+
+			require("Vues/back/product_view_article_page.php");
+		}else{
+
+
+
+			$url =  $fonction->double_cryptage('list_article_page');
+
+
+			
+				header("Location:?p=$url");
+			 
+		}
+		
+
+
+
+		
+
+		       break;
+
+
+	case 'update_article_page': 
+
+
+		$ec_family_manager = new Ec_familleManager($db);
+
+		$result_check = $ec_family_manager->getRow("SELECT * FROM ec_article WHERE article_id=?",array($id));
+
+		if($result_check){
+
+
+
+
+			   // here the update content will be
+
+
+
+
+
+			   require("Vues/back/product_update_article_page.php");
+		}else{
+
+
+
+			$url =  $fonction->double_cryptage('list_article_page');
+
+
+			
+				header("Location:?p=$url");
+			 
+		}
+		
+
+
+
+	
+
+
+
+	          break;
 
 	default:	
 
