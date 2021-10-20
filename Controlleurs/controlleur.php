@@ -1407,7 +1407,10 @@ case 'run_delete_many_colors':
 
 		$ec_family_manager = new Ec_familleManager($db);
 
-		$articles = $ec_family_manager->getRows("SELECT * FROM ec_article WHERE   ORDER BY article_id DESC");
+		$articles = $ec_family_manager->getRows("SELECT * FROM ec_article    ORDER BY article_id DESC");
+
+		// var_dump($articles);
+		// die();
 
 		require("Vues/back/product_list_article_page.php");
 
@@ -1815,6 +1818,44 @@ case 'run_delete_many_colors':
 
 
 		        break;
+
+	case 'run_delete_article': 
+
+
+		$id  = $_POST['id'];
+
+		$ec_family_manager = new Ec_familleManager($db);
+
+
+		$delete_query = $ec_family_manager->deleteRow("DELETE FROM ec_article WHERE article_id=?",array($id));
+
+		$data['response']="ok";
+		
+			echo   json_encode($data);
+
+
+				break;
+
+	case 'run_delete_many_articles': 
+
+
+		$ec_family_manager = new Ec_familleManager($db);
+
+		    $myid = $_POST['id'];
+
+			$id = str_replace(' ',',',$myid);
+
+
+			$result = $ec_family_manager->deleteRow("DELETE FROM ec_article WHERE article_id in($id) ",array());
+
+			
+			$data['response']="ok";
+
+		    echo json_encode($data);
+
+
+
+				break;
 
 	default:	
 

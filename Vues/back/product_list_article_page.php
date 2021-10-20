@@ -48,7 +48,7 @@
                                         </div>
                                           <div>
 
-                                           <button style="background-color:#26A69A;" class="btn not-display-image" data-target="#add-product"  data-toggle="modal">Ajouter un nouveau article</button>
+                                           <a style="background-color:#26A69A;" class="btn not-display-image" href="?p=<?= $fonction->double_cryptage("add_article_page");?>"   >Ajouter un nouveau article</a>
 
                                         </div>
                                         
@@ -78,28 +78,110 @@
                                                 </thead>
                                                 <tbody>
 
-                                                <?php foreach($articles as $key=> $family):   ?>
+                                                <?php foreach($articles as $key=> $article):   ?>
+
+
+                                                    <?php 
+
+                                                     $image = $ec_family_manager->getRow("SELECT * FROM ec_image WHERE article_id=?",array($article->article_id));
+
+                                                     $category = $ec_family_manager->getRow("SELECT * FROM ec_categorie WHERE categorie_id=?",array($article->categorie_id));
+
+                                                     $taille = $ec_family_manager->getRows("SELECT parametre_article_taille_pointure, sum(parametre_article_quantite) as quantite  FROM ec_parametre_article WHERE article_id=? GROUP BY parametre_article_taille_pointure",array($article->article_id));
+
+
+
+                                                     $couleur = $ec_family_manager->getRows("SELECT parametre_article_couleur, sum(parametre_article_quantite) as quantite  FROM ec_parametre_article WHERE article_id=? GROUP BY parametre_article_couleur",array($article->article_id));
+
+                                                     
+
+                                                     
+
+                                                    
+
+                                                    // $taille = array();
+                                                    $taille_enregistree=array();
+
+                                                     if(isset($taille)){
+
+                                                     
+                                                           
+                                                          foreach($taille as $key =>$v){
+
+                                                            array_push($taille, $v->parametre_article_taille_pointure);
+                                                            array_push($taille_enregistree, $v->parametre_article_taille_pointure.':'.$v->quantite);
+
+                                                          }
+
+                                                          
+                                                     }
+
+
+
+                                                     // $couleur = array();
+                                                    $couleur_enregistree=array();
+
+                                                    if(isset($couleur)){
+
+                                                    
+                                                          
+                                                         foreach($couleur as $key =>$value){
+
+                                                           array_push($couleur, $value->parametre_article_couleur);
+                                                           array_push($couleur_enregistree, $value->parametre_article_couleur.':'.$value->quantite);
+
+                                                         }
+
+                                                         
+                                                    }
+
+
+
+                                                    //  var_dump(substr_replace($couleur_display,"",-1));
+                                                    //  die();
+
+                                                     
+                                                        
+                                                        ?>
+
+
+
                                                     <tr>
-                                                        <td>
-                                                            <input type="checkbox" id="test<?=$key;?>" class="checkItem" value="<?=$family->famille_id;?>" name="id[]" />
+                                                        <td style="text-align: center;vertical-align:middle;">
+                                                            <input type="checkbox" id="test<?=$key;?>" class="checkItem" value="<?=$article->article_id;?>" name="id[]" />
                                                             <label for="test<?=$key;?>"></label>
                                                         </td>
-                                                        <td>Image here</td>
-                                                        <td><?=$family->famille_libelle;?></td>
-                                                        <!-- <td><?= substr($family->famille_description,0,30).' ...';?></td> -->
-                                                        <td>categorie here</td>
-                                                        <td>prix here</td>
-                                                        <td>couleur here</td>
-                                                        <td>taille here</td>
-                                                        <td>qte here</td>
+                                                        
+                                                        <td>
+
+
+                                                        <?php if(!empty($image->image_url)){ ?>
+                                                        <a target="_blank" href="?p=<?=$fonction->double_cryptage('detail_image_article_page')?>&id=<?=$fonction->double_cryptage($article->article_id)?>">
+                                                        <img style="width: 100px;height:100px;" class="img-thumbnail"  src="assets/images/articles/<?=$image->image_url;?>"/>
+                                                        </a>
+                                                        <?php } ?>
+
+
+                                                            
+                                                        
+                                                        
+                                                        </td>
+
+                                                        <td><?=$article->article_libelle;?></td>
+                                                        
+                                                        <td><?=$category->categorie_libelle;?></td>
+                                                        <td><?=$article->article_prix;?></td>
+                                                        <td><?=implode(', ', $couleur_enregistree) ?></td>
+                                                        <td><?=implode(', ', $taille_enregistree) ?></td>
+                                                        <td><?=$article->article_qte;?></td>
                                                         <td style="text-align: center;">
 
-                                                              <button class="btn btn-sm view" data-target="#view-product"  data-toggle="modal" data-id="<?=$family->famille_id;?>" data-nom="<?=$family->famille_libelle;?>" data-description="<?=$family->famille_description;?>"  data-image="<?=$family->famille_image;?>" data-placement="left" title="Update"><i class="fa fa-eye" aria-hidden="true"></i></button>
+                                                              <a class="btn btn-sm view" href="?p=<?=$fonction->double_cryptage('view_article_page')?>&id=<?=$fonction->double_cryptage($article->article_id)?>" data-placement="left" title="Update"><i class="fa fa-eye" aria-hidden="true"></i></a>
 
-                                                            <button class="btn btn-sm edit" data-id="<?=$family->famille_id;?>" data-nom="<?=$family->famille_libelle;?>" data-description="<?=$family->famille_description;?>"  data-image="<?=$family->famille_image;?>"  data-placement="left" title="Update" data-target="#update-product"  data-toggle="modal"><i class="fa fa-pencil" aria-hidden="true"></i></button>
+                                                            <a class="btn btn-sm edit" href="?p=<?=$fonction->double_cryptage('update_article_page')?>&id=<?=$fonction->double_cryptage($article->article_id)?>"   data-placement="left" title="Update"><i class="fa fa-pencil" aria-hidden="true"></i></a>
 
 
-                                                            <button class="btn btn-danger btn-sm delete" data-toggle="tooltip" data-id="<?=$family->famille_id;?>" data-placement="right" title="Delete "><i class="fa fa-trash-o" aria-hidden="true"></i></button>
+                                                            <button class="btn btn-danger btn-sm delete" data-toggle="tooltip" data-id="<?=$article->article_id;?>" data-placement="right" title="Delete "><i class="fa fa-trash-o" aria-hidden="true"></i></button>
                                                         </td>
                                                     </tr>
 
@@ -142,183 +224,19 @@
         <!-- ./page-content-wrapper -->
 
 
-                        <!-- this modal is for adding new family -->
-
-                            <!-- zoomIn -->
-                            <div class="modal animated zoomIn" id="add-product" role="dialog" style="width:100%">
-                                <div class="modal-dialog">
-
-                                    <!-- Modal content-->
-                                    <div class="modal-content">
-                                    <form action="" id="add-family-form">
-                                        <div class="modal-header">
-                                            <button type="button" id="modal-x-close-button" class="close" data-dismiss="modal">&times;</button>
-                                            <h4 class="modal-title">Ajouter une famille</h4>
-                                        </div>
-                                       
-
-                                      
-                                        <div class="modal-body">
-                                            
-                                                <div class="form-group">
-                                                    <label style="font-size:16px;color:#26A69A;" for="nom-famille">Nom <span class="text-danger">*</span></label>
-                                                    <input type="text" class="form-control" id="nom-famille"  placeholder="Nom Famille Produit" required>
-                                                    <small id="nom-famille-msg" class="form-text text-muted"></small>
-                                                </div>
-                                                <div class="form-group">
-                                                    <label style="font-size:16px;color:#26A69A;" for="description-famille">Description</label>
-                                                    <textarea  class="form-control" id="description-famille" ></textarea>
-                                                </div>
-
-                                                <div class="form-group">
-                                                <label style="font-size:16px;color:#26A69A;" for="description-famille">Image</label>
-                                                      <input style="display:none;" type="file" accept=".png,.jpg,.jpeg,.gif" id="image-famille"><br>
-
-                                                      <button type="button" id="image-button"  class="btn">Uploader l'Image</button>
-                                                </div>
-
-                                                <div class="image-frame">
-                                                      
-                                                     <img id="image-tag"   alt="">
-                                                </div>
-                                                
-                                            
-                                        </div>
-                                        <div class="modal-footer">
-                                            
-                                            <button type="button" class="waves-effect waves-light btn btn-danger" id="shutdownmodal" data-dismiss="modal">Fermer</button>
-                                            <button style="margin-right:15px;" type="submit" class="waves-effect waves-light btn">Valider</button>
-                                        </div>
-                                        </form>
-                                    </div>
-
-                                </div>
-                            </div>
+                   
 
 
 
 
 
-
-                            <!-- this modal is for editing a existing family -->
-                            <div class="modal animated zoomIn" id="update-product" role="dialog" style="width:100%">
-                                <div class="modal-dialog">
-
-                                    <!-- Modal content-->
-                                    <div class="modal-content">
-                                    <form action="" id="update-family-form">
-                                        <div class="modal-header">
-                                            <button type="button" id="modal-x-close-button" class="close" data-dismiss="modal">&times;</button>
-                                            <h4 class="modal-title">Modification</h4>
-                                        </div>
-                                       
-
-                                      
-                                        <div class="modal-body">
-                                            
-                                                <div class="form-group">
-                                                    <label style="font-size:16px;color:#26A69A;" for="nom-famille">Nom <span class="text-danger">*</span></label>
-                                                    <input type="text" class="form-control" id="nom-famille-update"  placeholder="Nom Famille Produit" required>
-
-
-                                                    
-                                                    <input type="hidden" id="family-id">
-                                                    <input type="hidden" id="family-image-update">
-
-
-                                                    <small id="nom-famille-msg" class="form-text text-muted"></small>
-                                                </div>
-                                                <div class="form-group">
-                                                    <label style="font-size:16px;color:#26A69A;" for="description-famille">Description</label>
-                                                    <textarea  class="form-control" id="description-famille-update" ></textarea>
-                                                </div>
-
-                                                <div class="form-group">
-                                                <label style="font-size:16px;color:#26A69A;" for="description-famille">Image</label>
-                                                      <input style="display:none;" type="file" accept=".png,.jpg,.jpeg,.gif" id="image-famille-update"><br>
-
-                                                      <button type="button" id="image-button-update"  class="btn">Uploader l'Image</button>
-                                                </div>
-
-                                                <div style="display:none;" class="former-image">
-
-                                                </div>
-
-                                                <div class="image-frame">
-                                                      
-                                                     <img id="image-tag-update"   alt="">
-                                                </div>
-                                                
-                                            
-                                        </div>
-                                        <div class="modal-footer">
-                                            
-                                            <button type="button" class="waves-effect waves-light btn btn-danger" id="shutdownmodal" data-dismiss="modal">Fermer</button>
-                                            <button style="margin-right:15px;" type="submit" class="waves-effect waves-light btn">Valider</button>
-                                        </div>
-                                        </form>
-                                    </div>
-
-                                </div>
-                            </div>
+                          
 
 
 
                             
 
-                            <!-- this modal right here is for viewing  -->
-
-                            <div class="modal animated zoomIn" id="view-product" role="dialog" style="width:100%">
-                                <div class="modal-dialog">
-
-                                    <!-- Modal content-->
-                                    <div class="modal-content">
-                                    <form action="" id="update-family-form">
-                                        <div class="modal-header">
-                                            <button type="button" id="modal-x-close-button" class="close" data-dismiss="modal">&times;</button>
-                                            <h4 class="modal-title">Affichage</h4>
-                                        </div>
-                                       
-
-                                      
-                                        <div class="modal-body">
-
-
-
-                                          <div id="main-view-frame">
-
-                                                  <div class="view-title">
-
-                                                 
-
-                                                  </div>
-
-                                                
-                                                 <div class="view-text" style="inline-size:100%;overflow-wrap:break-word;">
-
-                                                 </div>
-
-                                                 <div class="view-image">
-
-
-                                                 </div>
-
-                                          </div>
-                                            
-                                              
-                                                
-                                            
-                                        </div>
-                                        <div class="modal-footer">
-                                            
-                                            <button type="button" class="waves-effect waves-light btn btn-danger" id="shutdownmodal" data-dismiss="modal">Fermer</button>
-                                            <!-- <button style="margin-right:15px;" type="submit" class="waves-effect waves-light btn">Valider</button> -->
-                                        </div>
-                                        </form>
-                                    </div>
-
-                                </div>
-                            </div>
+                          
 
 
                             
@@ -401,509 +319,19 @@
 
 
 
-        <script>
+       
 
-                   "use strict";
-                   $(function(){
 
+       
 
 
-                    $('#add-product').on("hide.bs.modal", function() {
 
+    
 
-                        window.open("?p=<?= $fonction->double_cryptage("family");?>","_self");
-                        
-                    })
-                    $('#update-product').on("hide.bs.modal", function() {
 
 
-                        window.open("?p=<?= $fonction->double_cryptage("family");?>","_self");
-                        
-                    })
-                    $('#view-product').on("hide.bs.modal", function() {
 
-
-                        window.open("?p=<?= $fonction->double_cryptage("family");?>","_self");
-                        
-                    })
-
-
-
-
-                    var nom,description,image;
-
-                    // here , we want to not display preview of image
-
-                    
-
-                    
-
-                   
-
-
-                     $('#image-famille').click();
-
-                         function readURL(input){
-
-                              if(input.files && input.files[0]){
-
-                                  var reader = new FileReader();
-
-                                  reader.onload = function(e){
-
-                                     $("#image-tag").attr('src',e.target.result);
-                                     $('#image-tag').css({width:"200px",height:"200px"});
-
-                                     
-
-                                     
-
-
-                                    
-
-                                     image = $('#image-famille')[0].files[0];
-
-                                     
-                                  }
-
-                                  reader.readAsDataURL(input.files[0]);
-                              }else{
-
-                                  alert('choisissez une image pour l\'aperçu');
-                                  $('#image-tag').attr('src','');
-                                //   $('#image-tag').css({width:"200px",height:"200px"});
-                                
-                              }
-                         }
-
-                
-
-                    // the purpose is to trigger image select window 
-
-                    $('#image-button').click(function(e){
-
-                        //  e.preventDefault();
-
-                        $('#image-famille').click();
-
-                        $("#image-famille").change(function(){
-
-                              readURL(this);
-
-                            //   $('#image-frame').css('display','block');
-
-                            
-                        });
-
-                    });
-
-                    // when user clicks on close modal button
-
-                      $('#shutdownmodal').click(function(){
-
-                            $('#nom-famille').val('');
-                            $('#description-famille').val('');
-                            $('#image-famille').val('');
-
-                            window.open("?p=<?= $fonction->double_cryptage("family");?>","_self");
-                      });
-
-                       $('#modal-x-close-button').click(function(){
-
-                            $('#nom-famille').val('');
-                            $('#description-famille').val('');
-                            $('#image-famille').val('');
-                            window.open("?p=<?= $fonction->double_cryptage("family");?>","_self");
-                      });
-
-                      
-
-                      // when user submit the form
-
-                         $('#add-family-form').submit(function(e){
-
-
-                                e.preventDefault();
-
-                                // retrieve variable content  
-                                 nom = $('#nom-famille').val();
-                                 description = $('#description-famille').val();
-                                // var image = $('#image-famille')[0].files[0].name;
-
-                                var formData = new FormData();
-
-
-                                 formData.append('nom',nom);
-                                 formData.append('description',description);
-                                 formData.append('image',image);
-                                
-
-                                    $.ajax({
-
-
-                                        url:"?p=<?= $fonction->double_cryptage("run_add_family");?>",
-                                        type:"POST",
-                                        dataType:"JSON",
-                                        processData:false,
-                                        contentType:false,
-                                        data:formData,
-                                        success:function(data){
-
-
-                                            if(data.code==1){
-
-                                                swal('Succès!', data.message, 'success').catch(swal.noop)
-                                               
-
-                                            }else{
-
-                                                swal('Problème!', data.message, 'success').catch(swal.noop)
-
-                                               
-                                            }
-
-
-                                            setInterval(function(){ 
-
-                                                window.open("?p=<?= $fonction->double_cryptage("family");?>","_self");
-
-                                             }, 3000);
-                                            
-
-                                            
-
-
-                                           
-
-
-                                        }
-
-                                            
-                                    });
-                                
-                         });
-
-
-                   });
-
-
-
-        </script>
-
-
-        <script>
-
-            // when  update modal pops up 
-
-                 $("#update-product").on('show.bs.modal',function(e){
-
-
-                       var button_data = $(e.relatedTarget).data();
-
-                       var  id = button_data.id;
-                       var  nom = button_data.nom;
-                       var description = button_data.description;
-                       var image = button_data.image;
-
-                       
-
-                        $(this).find("#nom-famille-update").val(nom);
-                        $(this).find("#description-famille-update").val(description);
-                        $(this).find("#family-id").val(id);
-                        $(this).find("#family-image-update").val(image);
-
-
-
-                        var img = '<img style="width:150px;height:150px;" src="assets/images/families/'+image+'"  />';
-
-
-                        
-                         if(image!=''){
-
-                            $("#update-product .former-image").css('display','block');
-                         }
-
-                        $("#update-product .former-image").html(img);
-
-
-                         
-
-
-
-                         
-                 });
-
-
-
-
-        </script>
-
-
-
-         <script>
-
-                   // Updating family here 
-
-
-
-                   var nom,description,image;
-
-// here , we want to not display preview of image
-
-
-
-
-
-
-
-
- $('#image-famille-update').click();
-
-     function readURL(input){
-
-          if(input.files && input.files[0]){
-
-              var reader = new FileReader();
-
-              reader.onload = function(e){
-
-                 $("#image-tag-update").attr('src',e.target.result);
-                 $('#image-tag-update').css({width:"200px",height:"200px"});
-
-                 $("#update-product .former-image").css('display','none');
-
-                 
-
-                 
-
-
-                
-
-                 image = $('#image-famille-update')[0].files[0];
-
-                 
-              }
-
-              reader.readAsDataURL(input.files[0]);
-          }else{
-
-              alert('choisissez une image pour l\'aperçu');
-              $('#image-tag-update').attr('src','');
-            //   $('#image-tag').css({width:"200px",height:"200px"});
-            
-          }
-     }
-
-
-
-// the purpose is to trigger image select window 
-
-$('#image-button-update').click(function(e){
-
-    //  e.preventDefault();
-
-    $('#image-famille-update').click();
-
-    $("#image-famille-update").change(function(){
-
-          readURL(this);
-
-        //   $('#image-frame').css('display','block');
-
-        
-    });
-
-});
-
-// when user clicks on close modal button
-
-  $('#shutdownmodal').click(function(){
-
-        $('#nom-famille').val('');
-        $('#description-famille').val('');
-        $('#image-famille-update').val('');
-
-        window.open("?p=<?= $fonction->double_cryptage("family");?>","_self");
-  });
-
-   $('#modal-x-close-button').click(function(){
-
-        $('#nom-famille').val('');
-        $('#description-famille').val('');
-        $('#image-famille-update').val('');
-        window.open("?p=<?= $fonction->double_cryptage("family");?>","_self");
-  });
-
-  
-
-  // when user submit the form
-
-     $('#update-family-form').submit(function(e){
-
-
-            e.preventDefault();
-
-            // retrieve variable content  
-             nom = $('#nom-famille-update').val();
-             description = $('#description-famille-update').val();
-            // var image = $('#image-famille')[0].files[0].name;
-
-            image_case = $("#family-image-update").val();
-
-            id = $("#family-id").val();
-
-            // console.log(id);
-            // console.log(image);
-            // console.log(image_case);
-
-            if (
-                typeof image === 'object' &&
-                !Array.isArray(image) &&
-                image !== null
-            ) {
-
-                console.log('it is an object');
-                 
-            }else{
-
-                  image = image_case;
-            }
-
-           
-
-            var formData = new FormData();
-
-
-             formData.append('nom',nom);
-             formData.append('description',description);
-             
-             formData.append('image',image);
-             formData.append('id',id);
-             
-            
-
-                $.ajax({
-
-
-                    url:"?p=<?= $fonction->double_cryptage("run_update_family");?>",
-                    type:"POST",
-                    dataType:"JSON",
-                    processData:false,
-                    contentType:false,
-                    data:formData,
-                    success:function(data){
-
-
-                        if(data.code==1){
-
-                            swal('Succès!', data.message, 'success').catch(swal.noop)
-                           
-
-                        }else{
-
-                            swal('Problème!', data.message, 'success').catch(swal.noop)
-
-                           
-                        }
-
-
-                        setInterval(function(){ 
-
-                            window.open("?p=<?= $fonction->double_cryptage("family");?>","_self");
-
-                         }, 3000);
-
-                       
-                        
-
-                        
-
-
-                       
-
-
-                    }
-
-                        
-                });
-            
-     });
-
-
-
-
-
-         </script>
-
-
-
-
-
-         <script>
-                $(function(){
-
-
-
-
-
-
-
-                                // when  update modal pops up 
-
-                 $("#view-product").on('show.bs.modal',function(e){
-
-
-                       var button_data = $(e.relatedTarget).data();
-
-                       var  id = button_data.id;
-                       var  nom = button_data.nom;
-                       var description = button_data.description;
-                       var image = button_data.image;
-
-
-                       
-
-                      
-
-
-                       var view_title_tag = '<h2>'+nom+'</h2>';
-                       var view_text_tag = '<p>'+description+'</p>';
-
-                       
-
-                        $(this).find(".view-title").html(view_title_tag);
-                        $(this).find(".view-text").html(view_text_tag);
-                       
-
-
-
-                        var img = '<img style="width:100%;height:300px;" src="assets/images/families/'+image+'"  />';
-
-
-                        
-                         if(image!=''){
-
-                            $(".view-image").html(img);
-                         }
-
-                        
-
-
-                         
-
-
-
-                         
-                 });
-
-                       
-
-
-
-
-
-                });
-         </script>
+   
 
 
 
@@ -943,7 +371,7 @@ $('#image-button-update').click(function(e){
                                                             $.ajax({
 
 
-                                                                url:"?p=<?= $fonction->double_cryptage("run_delete_family");?>",
+                                                                url:"?p=<?= $fonction->double_cryptage("run_delete_article");?>",
                                                                 type:"POST",
                                                                 dataType:"JSON",
                                                                 data:{id:id},
@@ -958,7 +386,7 @@ $('#image-button-update').click(function(e){
 
                                                                      setInterval(function(){ 
 
-                                                                    window.open("?p=<?= $fonction->double_cryptage("family");?>","_self");
+                                                                    window.open("?p=<?= $fonction->double_cryptage("list_article_page");?>","_self");
 
                                                                 }, 3000);
 
@@ -1049,7 +477,7 @@ $('#image-button-update').click(function(e){
                                                             $.ajax({
 
 
-                                                                url:"?p=<?= $fonction->double_cryptage("run_delete_many_families");?>",
+                                                                url:"?p=<?= $fonction->double_cryptage("run_delete_many_articles");?>",
                                                                 type:"POST",
                                                                 dataType:"JSON",
                                                                 data:{id:id},
@@ -1067,7 +495,7 @@ $('#image-button-update').click(function(e){
 
                                                                      setInterval(function(){ 
 
-                                                                    window.open("?p=<?= $fonction->double_cryptage("family");?>","_self");
+                                                                    window.open("?p=<?= $fonction->double_cryptage("list_article_page");?>","_self");
 
                                                                 }, 3000);
 

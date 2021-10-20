@@ -135,6 +135,9 @@
                                         </td>
                                         <?php
 
+                                        
+
+
                                         $Mcouleur_taille=new atout_taille_couleur_qteManager($db);
                                         $taille_simple=$Mcouleur_taille->getDataRequest(array("atout_taille_couleur_qte"),array("produit_id"=>$value->produit_id),array(),"","atcq_taille",true,"","sum(atcq_qte) as qte,atcq_taille")['data'];
                                         $taille_seul=array();
@@ -189,7 +192,6 @@
                                             <?php endif; ?>
                                         </select>
                                     </div>
-                                    
                                     <div class="form-group">
                                         <label>Libellé (Obligatoire)</label>
                                         <input type="text" required="" name="produit_libelle" class="form-control"  placeholder="Libellé de l'article" />
